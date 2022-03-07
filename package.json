@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "node app",
-    "start": "nodemon ./bin/www",
+    "start": "node ./bin/www",
     "test": "mocha"
   },
   "dependencies": {
