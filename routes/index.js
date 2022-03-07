@@ -1,16 +1,10 @@
-var express = require('express');
-var router = express.Router();
+const router = require('express').Router()
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.send("hello world!");
-});
-
-router.get('/test',(req, res)=>{
-  return res.send("test")
+router.get("/", (req,res) => {
+    res.send("This is backend service!")
 })
-
-router.get('*', (req, res) => {
-  return res.redirect('/')
+router.use('/user', require('./users'))
+router.use("*", (req,res) => {
+    res.redirect("/")
 })
-module.exports = router;
+module.exports = router
