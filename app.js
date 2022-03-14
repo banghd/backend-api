@@ -1,17 +1,21 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var mongoose = require("mongoose")
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const  cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const mongoose = require("mongoose")
 
 const indexRouter = require('./routes/index');
+const fileUpload = require('express-fileupload')
 
-var app = express();
-require('dotenv').config()
+
+const app = express();
+require('dotenv').config('./env')
+
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
+app.use(fileUpload({
+  useTempFiles: true
+}))
 
 app.use(logger('dev'));
 app.use(express.json());
