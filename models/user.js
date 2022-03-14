@@ -1,9 +1,9 @@
 const mongoose = require('mongoose')
 const roles = require('../constants/roles')
+const constants = require("../constants/roles");
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true,
         trim: true
     },
     email: {
@@ -17,7 +17,8 @@ const userSchema = new mongoose.Schema({
     },
     role: {
         type: Number,
-        default: roles.renter
+        default: roles.renter,
+        enum: [constants.renter, constants.owner, constants.admin]
     },
     sex: {
         type : Number,
