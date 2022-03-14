@@ -4,7 +4,7 @@ const constants = require("../constants/roles")
 const jwt = require('jsonwebtoken')
 const userService = {
     getdata: async (id) => {
-        const data = await UserModel.findOne({_id: id})
+        const data = await UserModel.findOne({_id: id}).select("-password")
         if (!data) {
             throw new Error("Cannot find user")
         }
