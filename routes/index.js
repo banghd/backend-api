@@ -4,6 +4,7 @@ router.get("/", (req,res) => {
     res.send("This is backend service!")
 })
 router.use('/user', require('./users'))
+router.use('/file', require('./upload'))
 router.use("*", (req,res) => {
     res.redirect("/")
 })
