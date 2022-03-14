@@ -25,11 +25,11 @@ const userService = {
         const accessToken = jwt.sign({
             email: data.email,
             role: data.role ? data.role : constants.renter
-        }, process.env.JWT_ACCESS_TOKEN)
+        }, process.env.JWT_ACCESS_TOKEN, {expiresIn: "1d"})
         const refreshToken = jwt.sign({
             email: data.email,
             role: data.role ? data.role : constants.renter
-        }, process.env.JWT_REFRESH_TOKEN)
+        }, process.env.JWT_REFRESH_TOKEN, {expiresIn: "7d"})
         return {accessToken, refreshToken}
     },
     logIn: async (data) => {
@@ -44,11 +44,11 @@ const userService = {
         const accessToken = jwt.sign({
             email: existUser.email,
             role: existUser.role
-        }, process.env.JWT_ACCESS_TOKEN)
+        }, process.env.JWT_ACCESS_TOKEN , {expiresIn: "1d"})
         const refreshToken = jwt.sign({
             email: existUser.email,
             role: existUser.role
-        }, process.env.JWT_REFRESH_TOKEN)
+        }, process.env.JWT_REFRESH_TOKEN, {expiresIn: "1d"})
         return {accessToken, refreshToken}
     }
 }
