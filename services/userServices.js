@@ -17,18 +17,20 @@ const userService = {
         }
         const rndInt = Math.floor(Math.random() * 10) + 1
         const hashPass = bcrypt.hashSync(data.password, rndInt)
-        await UserModel.create({
+        const user = await UserModel.create({
             email: data.email,
             password: hashPass,
             role: data.role
         })
         const accessToken = jwt.sign({
             email: data.email,
-            role: data.role ? data.role : constants.renter
+            role: data.role ? data.role : constants.renter,
+            id : user._id
         }, process.env.JWT_ACCESS_TOKEN, {expiresIn: "1d"})
         const refreshToken = jwt.sign({
             email: data.email,
-            role: data.role ? data.role : constants.renter
+            role: data.role ? data.role : constants.renter,
+            id : user._id
         }, process.env.JWT_REFRESH_TOKEN, {expiresIn: "7d"})
         return {accessToken, refreshToken}
     },
@@ -43,11 +45,13 @@ const userService = {
         }
         const accessToken = jwt.sign({
             email: existUser.email,
-            role: existUser.role
+            role: existUser.role,
+            id: existUser._id
         }, process.env.JWT_ACCESS_TOKEN , {expiresIn: "5m"})
         const refreshToken = jwt.sign({
             email: existUser.email,
-            role: existUser.role
+            role: existUser.role,
+            id: existUser._id
         }, process.env.JWT_REFRESH_TOKEN, {expiresIn: "7d"})
         return {accessToken, refreshToken}
     }
