@@ -44,7 +44,7 @@ const userService = {
         const accessToken = jwt.sign({
             email: existUser.email,
             role: existUser.role
-        }, process.env.JWT_ACCESS_TOKEN , {expiresIn: "1d"})
+        }, process.env.JWT_ACCESS_TOKEN , {expiresIn: "5m"})
         const refreshToken = jwt.sign({
             email: existUser.email,
             role: existUser.role
