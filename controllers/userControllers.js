@@ -17,7 +17,7 @@ const UserControllers = {
     createUser: async (req, res) => {
         try {
             const {accessToken, refreshToken} = await userService.createUser(req.body)
-            res.status(200).json({
+            return res.status(200).json({
                 data: {accessToken, refreshToken},
                 message: "Create user successfully"
             })
@@ -30,7 +30,7 @@ const UserControllers = {
     logIn: async (req, res) => {
         try {
             const {accessToken, refreshToken} = await userService.logIn(req.body)
-            res.status(200).json({
+            return res.status(200).json({
                 data: {accessToken, refreshToken},
                 message: "Login successfully"
             })
