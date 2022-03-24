@@ -73,9 +73,9 @@ const AccomodSchema = new mongoose.Schema({
             default: ""
         }
     },
-    image: {
+    images: [{
         public_id: String,
         url: String
-    }
+    }]
 })
 module.exports = mongoose.model('Accomodations', AccomodSchema)
