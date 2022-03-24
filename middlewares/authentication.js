@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken')
+const roles = require('../constants/roles')
 
 const auth = async (req, res, next) => {
     try {
@@ -16,4 +17,16 @@ const auth = async (req, res, next) => {
         return res.status(400).json({message: err.message})
     }
 }
-module.exports = {auth}
+const authAdmin = async (req, res, next) => {
+    try {
+        let user = req.user
+        if (user.role !== roles.admin) {
+            return res.status(400).json({message: err.message})
+        }
+        return next()
+
+    } catch (err) {
+        return res.status(400).json({message: err.message})
+    }
+}
+module.exports = {auth, authAdmin}

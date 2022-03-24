@@ -20,7 +20,8 @@ const userService = {
         const user = await UserModel.create({
             email: data.email,
             password: hashPass,
-            role: data.role
+            role: data.role,
+            isApproved: data.role === constants.owner ? false : true
         })
         const accessToken = jwt.sign({
             email: data.email,
@@ -54,6 +55,19 @@ const userService = {
             id: existUser._id
         }, process.env.JWT_REFRESH_TOKEN, {expiresIn: "7d"})
         return {accessToken, refreshToken}
+    },
+    GetRefreshToken: async (token) => {
+        try {
+            const decoded = await jwt.verify(token, process.env.JWT_REFRESH_TOKEN)
+            return jwt.sign({
+                email: decoded.email,
+                role: decoded.role,
+                id: decoded._id
+            }, process.env.JWT_ACCESS_TOKEN, {expiresIn: "5m"})
+        } catch (e){
+            console.log(e.message)
+            throw new Error(e.message)
+        }
     }
 }
 module.exports = userService

@@ -8,7 +8,7 @@ const UserControllers = {
             const data = await userService.getdata(id)
             return res.json(data)
         } catch (e) {
-            res.status(400).json({
+            return res.status(400).json({
                 message: e.message
             })
         }
@@ -22,7 +22,7 @@ const UserControllers = {
                 message: "Create user successfully"
             })
         } catch (e) {
-            res.status(400).json({
+            return res.status(400).json({
                 message: e.message
             })
         }
@@ -35,12 +35,25 @@ const UserControllers = {
                 message: "Login successfully"
             })
         } catch (e) {
-            res.status(400).json({
+            return res.status(400).json({
                 message: e.message
             })
         }
     },
-
+    refreshToken: async (req, res) => {
+        try {
+            const {refreshToken} = req.query
+            const accessToken = await userService.GetRefreshToken(refreshToken)
+            return res.status(200).json({
+                accessToken,
+                message: "refresh token succesfully"
+            })
+        } catch (e) {
+            return res.status(400).json({
+                message: e.message
+            })
+        }
+    }
 }
 
 module.exports = UserControllers

@@ -18,7 +18,9 @@ app.use(fileUpload({
   useTempFiles: true
 }))
 
-app.use(logger('dev'));
+app.use(logger(':method :url :status :res[content-length] - :response-time ms', {
+  skip: function (req, res) { return res.statusCode < 400 }
+}));
 app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
