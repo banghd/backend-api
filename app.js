@@ -10,7 +10,7 @@ const indexRouter = require('./routes/index');
 const fileUpload = require('express-fileupload')
 
 
-const app = express();
+const app = express({limit: '50mb'});
 require('dotenv').config('./env')
 
 // view engine setup
