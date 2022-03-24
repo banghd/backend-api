@@ -48,6 +48,8 @@ router.post('/destroy', async (req, res) => {
         const data = await bluebird.map(public_id, async id => {
             return cloudinary.uploader.destroy(id)
         })
+        const notFound = data.filter(ele => ele.result == "not found")
+        if (notFound.length)  return res.status(400).json({ msg: "some id images is not right" })
         return res.status(200).json({ msg: "Deleted Image", data})
     } catch (err) {
         return res.status(500).json({ msg: err.message })
