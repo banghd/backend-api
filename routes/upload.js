@@ -2,7 +2,7 @@ const router = require('express').Router()
 const cloudinary = require('cloudinary').v2
 const bluebird = require('bluebird')
 const fs = require('fs')
-
+const listType = ['image/jpeg', 'image/png', 'image/webp', 'image/webp', 'image/avif', 'image/bmp', 'image/gif', 'image/svg+xml', 'image/tiff']
 
 //  upload image on cloudinary
 const config = () => cloudinary.config({
@@ -18,22 +18,35 @@ router.post('/upload', async (req, res) => {
         if (!req.files || Object.keys(req.files).length === 0)
             return res.status(400).json({ msg: 'No files were uploaded.' })
 
-        const files = req.files.file;
+        let files = req.files.file;
+
+        if (Array.isArray(files) && files.length < 1) {
+            await bluebird.all(files, file => {
+                return removeTmp(file.tempFilePath)
+            })
+            throw new Error("file must be not empty array")
+        }
+
+        if (!Array.isArray(files) && !files.isNull) {
+            console.log("1 image")
+            files = [files]
+        }
         const data = await bluebird.map(files, async (file) => {
             if (file.size > 5 * 1024 * 1024) {
                 removeTmp(file.tempFilePath)
                 throw new Error("file is too large")
             }
 
-            if (file.mimetype !== 'image/jpeg' && file.mimetype !== 'image/png') {
+            if (!listType.includes(file.mimetype)) {
                 removeTmp(file.tempFilePath)
+                console.log("type", file.mimetype)
                 throw new Error("File format is incorrect.")
             }
             const result = await cloudinary.uploader.upload(file.tempFilePath, { folder: "test" })
             await removeTmp(file.tempFilePath)
             return { public_id: result.public_id, url: result.secure_url }
         })
-        return res.status(200).json(data)
+        return res.status(200).json(data.length > 1 ? data : data[0])
     } catch (err) {
         console.log(err)
         return res.status(500).json({ msg: err.message })
