@@ -88,9 +88,7 @@ const buildQuery = payload => {
     if(payload?.birthDay) {
         query.birthDay = moment(payload.birthDay, 'DD-MM-YY').toDate()
     }
-    if (payload?.sex) {
-        isString(payload.sex) ? query.sex = parseInt(payload.sex) : query.sex = payload.sex
-    }
+    if(payload.sex !== undefined)query.sex = payload.sex
 
     if(payload?.address?.district !== "" && payload?.address?.district ) {
         query["address.district"] = payload?.address?.district

@@ -24,9 +24,8 @@ const userSchema = new mongoose.Schema({
       type: Date,
     },
     sex: {
-        type : Number,
-        enum : [0, 1],
-        default: 1
+        type: Boolean,
+        default: true
     },
     address : {
         district : {

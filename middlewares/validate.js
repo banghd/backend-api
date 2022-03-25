@@ -37,7 +37,7 @@ const validateUser = async (req, res, next) => {
         id: joi.string().required(),
         name : joi.string().trim(),
         birthDay: joi.string(),
-        sex: joi.number().positive().integer().allow(0,1),
+        sex: joi.bool(),
         address: {
             district : joi.string().trim().allow(null, ""),
             ward: joi.string().trim().allow(null, ""),
@@ -45,7 +45,7 @@ const validateUser = async (req, res, next) => {
         },
         phoneNumber: joi.string().trim(),
         CCCD: joi.string().trim(),
-        zalo: joi.string().trim(),
+        zalo: joi.string().allow(""),
         avatar: {
             public_id: joi.string().required(),
             url: joi.string().uri().required()
