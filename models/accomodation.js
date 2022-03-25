@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 const roomType = require('../constants/typeAccomod')
 
 const AccomodSchema = new mongoose.Schema({
+    status: {
+        type: String,
+        enum: ["draft", "posted", "approved"],
+        default: "draft"
+    },
     type : {
         type: Number,
         enum: Object.values(roomType),
@@ -76,6 +81,7 @@ const AccomodSchema = new mongoose.Schema({
     images: [{
         public_id: String,
         url: String
-    }]
+    }],
+    ownerId: String
 })
 module.exports = mongoose.model('Accomodations', AccomodSchema)

@@ -53,6 +53,18 @@ const UserControllers = {
                 message: e.message
             })
         }
+    },
+    updateUser : async (req, res) => {
+        try {
+            await userService.updateUser(req.body)
+            return res.status(200).json({
+                message: "update user successfully"
+            })
+        } catch (e) {
+            return res.status(400).json({
+                message: e.message
+            })
+        }
     }
 }
 

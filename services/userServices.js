@@ -2,6 +2,9 @@ const UserModel = require('../models/user')
 const bcrypt = require("bcrypt")
 const constants = require("../constants/roles")
 const jwt = require('jsonwebtoken')
+const moment = require('moment')
+
+const {isString} = require("mocha/lib/utils");
 const userService = {
     getdata: async (id) => {
         const data = await UserModel.findOne({_id: id}).select("-password")
@@ -21,7 +24,7 @@ const userService = {
             email: data.email,
             password: hashPass,
             role: data.role,
-            isApproved: data.role === constants.owner ? false : true
+            isApproved: data.role !== constants.owner
         })
         const accessToken = jwt.sign({
             email: data.email,
@@ -48,7 +51,7 @@ const userService = {
             email: existUser.email,
             role: existUser.role,
             id: existUser._id
-        }, process.env.JWT_ACCESS_TOKEN , {expiresIn: "5m"})
+        }, process.env.JWT_ACCESS_TOKEN , {expiresIn: "1d"})
         const refreshToken = jwt.sign({
             email: existUser.email,
             role: existUser.role,
@@ -63,11 +66,57 @@ const userService = {
                 email: decoded.email,
                 role: decoded.role,
                 id: decoded._id
-            }, process.env.JWT_ACCESS_TOKEN, {expiresIn: "5m"})
+            }, process.env.JWT_ACCESS_TOKEN, {expiresIn: "1d"})
         } catch (e){
             console.log(e.message)
             throw new Error(e.message)
         }
+    },
+    updateUser: async (payload) => {
+            const query = buildQuery(payload)
+            const update = await UserModel.updateOne({_id: payload.id}, query)
+            if (!update.modifiedCount)throw new Error("unable to update user info")
     }
 }
 module.exports = userService
+
+const buildQuery = payload => {
+    const query = {}
+    if (payload?.name) {
+        query.name = payload.name
+    }
+    if(payload?.birthDay) {
+        query.birthDay = moment(payload.birthDay, 'DD-MM-YY').toDate()
+    }
+    if (payload?.sex) {
+        isString(payload.sex) ? query.sex = parseInt(payload.sex) : query.sex = payload.sex
+    }
+
+    if(payload?.address?.district !== "" && payload?.address?.district ) {
+        query["address.district"] = payload?.address?.district
+    }
+    if(payload?.address?.ward !== "" && payload?.address?.ward) {
+        query["address.ward"] = payload?.address?.ward
+    }
+    if(payload?.address?.detail !== "" && payload?.address?.detail) {
+        query["address.detail"] = payload?.address?.detail
+    }
+
+    if (payload?.phoneNumber) {
+        query.phoneNumber = payload.phoneNumber
+    }
+    if (payload?.CCCD) {
+        query.CCCD = payload.CCCD
+    }
+    if (payload?.zalo) {
+        query.zalo = payload.zalo
+    }
+    if (payload?.avatar) {
+        query.avatar = payload.avatar
+    }
+    if (payload?.password) {
+        const rndInt = Math.floor(Math.random() * 10) + 1
+        query.password = bcrypt.hashSync(payload.password, rndInt)
+    }
+    return {"$set": query}
+}

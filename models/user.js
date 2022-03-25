@@ -20,6 +20,9 @@ const userSchema = new mongoose.Schema({
         default: roles.renter,
         enum: [constants.renter, constants.owner, constants.admin]
     },
+    birthDay: {
+      type: Date,
+    },
     sex: {
         type : Number,
         enum : [0, 1],
@@ -41,7 +44,10 @@ const userSchema = new mongoose.Schema({
         url : String
     } ,
     zalo : String,
-    isApproved: Boolean
+    isApproved: {
+        type: Boolean,
+        default: true
+    }
 }, {
     timestamps: true
 })
