@@ -39,8 +39,14 @@ const userSchema = new mongoose.Schema({
     phoneNumber : String,
     CCCD: String,
     avatar : {
-        public_id : String,
-        url : String
+        public_id : {
+            type: String,
+            default: ""
+        },
+        url : {
+            type: String,
+            default: "https://file4.batdongsan.com.vn/images/default-user-avatar-blue.jpg"
+        }
     } ,
     zalo : String,
     isApproved: {
