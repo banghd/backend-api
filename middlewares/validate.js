@@ -1,22 +1,24 @@
 const joi = require("joi")
 const constants = require("../constants/roles")
-const validateSignIn = async (req,res, next)=> {
+const typeAccomod = require("../constants/typeAccomod")
+const validateSignIn = async (req, res, next) => {
     const data = req.body
     const schema = joi.object({
         email: joi.string().email().required(),
         password: joi.string()
-        .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(),
+            .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(),
         role: joi.number().positive().required().greater(1).message("role user must greater than 1").integer()
     })
     const {value, error} = schema.validate(data)
     if (error) {
-        return res.status(400).json({message : error.message})
+        return res.status(400).json({message: error.message})
     }
+    value.email = value.email.toLowerCase()
     req.body = value
     next()
 }
 
-const validateLogIn = async (req,res, next)=> {
+const validateLogIn = async (req, res, next) => {
     const data = req.body
     const schema = joi.object({
         email: joi.string().email().required(),
@@ -25,8 +27,9 @@ const validateLogIn = async (req,res, next)=> {
     })
     const {value, error} = schema.validate(data)
     if (error) {
-        return res.status(400).json({message : error.message})
+        return res.status(400).json({message: error.message})
     }
+    value.email = value.email.toLowerCase()
     req.body = value
     next()
 }
@@ -35,11 +38,11 @@ const validateUser = async (req, res, next) => {
     const data = req.body
     const schema = joi.object({
         id: joi.string().required(),
-        name : joi.string().trim(),
+        name: joi.string().trim(),
         birthDay: joi.string(),
         sex: joi.bool(),
         address: {
-            district : joi.string().trim().allow(null, ""),
+            district: joi.string().trim().allow(null, ""),
             ward: joi.string().trim().allow(null, ""),
             detail: joi.string().trim().allow(null, "")
         },
@@ -56,9 +59,50 @@ const validateUser = async (req, res, next) => {
     const {error, value} = schema.validate(data)
     console.log(value)
     if (error) {
-        return res.status(400).json({message : error.message})
+        return res.status(400).json({message: error.message})
     }
     req.body = value
     next()
 }
-module.exports = {validateSignIn, validateLogIn, validateUser}
+
+const validateAccomodation = async (req, res, next) => {
+    const data = req.body
+    if (req.method == 'POST') data.ownerId = req.user.id
+
+    const schema = joi.object({
+        status: joi.string().valid("draft", "posted", "approved"),
+        type: joi.number().valid(Object.values(typeAccomod)),
+        address: {
+            district: joi.string().trim().required(),
+            ward: joi.string().trim().required(),
+            detail: joi.string().trim().required()
+        },
+        area: joi.number().required(),
+        price: {
+            unit: joi.string().trim().required(),
+            quantity: joi.number().required(),
+        },
+        public_location: joi.string().trim().required(),
+        sameOwner: joi.bool().required(),
+        bedRoom: joi.number().required(),
+        bathRoom: joi.bool().required(),
+        kitchen: joi.bool().required(),
+        balcony: joi.bool().required(),
+        aircondition: joi.bool().required(),
+        detailedPost: {
+            title: joi.string().required(),
+            content: joi.string().required()
+        },
+        ownerId: joi.string(),
+        images: joi.array().items(joi.string()),
+    })
+    const {error, value} = schema.validate(data)
+    console.log(value)
+    if (error) {
+        return res.status(400).json({message: error.message})
+    }
+    req.body = value
+    next()
+}
+
+module.exports = {validateSignIn, validateLogIn, validateUser, validateAccomodation}
