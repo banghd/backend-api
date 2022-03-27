@@ -5,7 +5,7 @@ const AccomodationControllers = {
         try {
             const {id} = req.params
             if (!id) return res.status(400).json({message: "Vui lòng cung cấp id"})
-            const data = await accomodationService.getdata(id)
+            const data = await accomodationService.getAccomodation(id)
             return res.json(data)
         } catch (e) {
             return res.status(400).json({
