@@ -1,5 +1,6 @@
 const joi = require("joi")
 const constants = require("../constants/roles")
+const typeAccomod = require("../constants/typeAccomod")
 const validateSignIn = async (req,res, next)=> {
     const data = req.body
     const schema = joi.object({
@@ -61,4 +62,43 @@ const validateUser = async (req, res, next) => {
     req.body = value
     next()
 }
-module.exports = {validateSignIn, validateLogIn, validateUser}
+
+const validateAccomodation = async (req, res, next) => {
+    const data = req.body
+    const schema = joi.object({
+        status: joi.string().valid("draft", "posted", "approved"),
+        type : joi.number().valid(Object.values(typeAccomod)),
+        address: {
+            district : joi.string().trim().required(),
+            ward: joi.string().trim().required(),
+            detail: joi.string().trim().required()
+        },
+        area: joi.number().required(),
+        price: {
+            unit : joi.string().trim().required(),
+            quantity: joi.number().required(),
+        },
+        public_location: joi.string().trim().required(),
+        sameOwner: joi.bool().required(),
+        bedRoom: joi.number().required(),
+        bathRoom: joi.bool().required(),
+        kitchen: joi.bool().required(),
+        balcony: joi.bool().required(),
+        aircondition: joi.bool().required(),
+        detailedPost: {
+            title: joi.string().required(),
+            content: joi.string().required()
+        },
+        ownerId: joi.string().required(),
+        images: Joi.array().items(Joi.string()),
+    })
+    const {error, value} = schema.validate(data)
+    console.log(value)
+    if (error) {
+        return res.status(400).json({message : error.message})
+    }
+    req.body = value
+    next()
+}
+
+module.exports = {validateSignIn, validateLogIn, validateUser, validateAccomodation}
