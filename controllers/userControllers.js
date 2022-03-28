@@ -65,6 +65,25 @@ const UserControllers = {
                 message: e.message
             })
         }
+    },
+    updatePass: async (req, res) => {
+        try {
+            const {id, password} = req.body
+            if (!id || !password) return res.status(400).json({
+                message: "thiếu id hoặc password"
+            })
+            if (!/^[a-zA-Z0-9]{3,30}$/.test(password)) return res.status(400).json({
+                message: "password không hợp lệ"
+            })
+            await userService.updatePass(id, password)
+            return res.status(200).json({
+                message: "Cập nhật mật khẩu thành công"
+            })
+        } catch (e) {
+            return res.status(400).json({
+                message: e.message
+            })
+        }
     }
 }
 
