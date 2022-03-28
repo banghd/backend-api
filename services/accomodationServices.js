@@ -10,24 +10,22 @@ const AccomodationService = {
         return data
     },
     createAccomodation: async (data) => {
-        const accomodation = await AccomodationModel.create(data)
-        return accomodation
+        return AccomodationModel.create(data)
     },
     updateAccomodation: async (id, data) => {
-        const existAccomodation = await AccomodationModel.findOne({id: id})
+        const existAccomodation = await AccomodationModel.findOne({_id: id})
         if (!existAccomodation) {
             throw new Error("Nhà trọ không tồn tại !")
         }
-        const accomodation = await AccomodationModel.updateOne({_id: id}, data)
-        return accomodation
+        return AccomodationModel.updateOne({_id: id}, data)
     },
     deleteAccomodation: async (id) => {
-        const existAccomodation = await AccomodationModel.findOne({id: id})
+        const existAccomodation = await AccomodationModel.findOne({_id: id})
         if (!existAccomodation) {
             throw new Error("Nhà trọ không tồn tại !")
         }
-        const result = await AccomodationModel.deleteOne({_id: id})
-        return result
+        return AccomodationModel.deleteOne({_id: id})
+
     },
     getAccomodations: async (req) => {
         const data = await AccomodationModel.find({})
