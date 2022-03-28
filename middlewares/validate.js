@@ -69,7 +69,7 @@ const validateAccomodation = async (req, res, next) => {
 
     const schema = joi.object({
         status: joi.string().valid("draft", "posted", "approved"),
-        type: joi.number().valid(Object.values(typeAccomod)),
+        type: joi.number(),
         address: {
             district: joi.string().trim().required(),
             ward: joi.string().trim().required(),
@@ -92,7 +92,7 @@ const validateAccomodation = async (req, res, next) => {
             content: joi.string().required()
         },
         ownerId: joi.string(),
-        images: Joi.array().items(Joi.string()),
+        images: joi.array().items(joi.string()),
     })
     const {error, value} = schema.validate(data)
     console.log(value)

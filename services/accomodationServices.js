@@ -1,3 +1,4 @@
+const { getAccomodations } = require('../controllers/accomodationControllers')
 const AccomodationModel = require('../models/accomodation')
 
 const AccomodationService = {
@@ -17,7 +18,7 @@ const AccomodationService = {
         if (!existAccomodation) {
             throw new Error("Nhà trọ không tồn tại !")
         }
-        const accomodation = await AccomodationModel.update(data)
+        const accomodation = await AccomodationModel.updateOne({_id: id}, data)
         return accomodation
     },
     deleteAccomodation: async (id) => {
@@ -25,8 +26,15 @@ const AccomodationService = {
         if (!existAccomodation) {
             throw new Error("Nhà trọ không tồn tại !")
         }
-        const result = await AccomodationModel.delete(data)
+        const result = await AccomodationModel.deleteOne({_id: id})
         return result
+    },
+    getAccomodations: async (req) => {
+        const data = await AccomodationModel.find({})
+        if (!data) {
+            throw new Error("Không tìm thấy")
+        }
+        return data
     }
 }
 module.exports = AccomodationService
