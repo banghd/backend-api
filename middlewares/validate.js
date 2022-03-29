@@ -13,6 +13,7 @@ const validateSignIn = async (req, res, next) => {
     if (error) {
         return res.status(400).json({message: error.message})
     }
+    value.email = value.email.toLowerCase()
     req.body = value
     next()
 }
@@ -28,6 +29,7 @@ const validateLogIn = async (req, res, next) => {
     if (error) {
         return res.status(400).json({message: error.message})
     }
+    value.email = value.email.toLowerCase()
     req.body = value
     next()
 }

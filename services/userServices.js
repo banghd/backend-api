@@ -76,6 +76,12 @@ const userService = {
             const query = buildQuery(payload)
             const update = await UserModel.updateOne({_id: payload.id}, query)
             if (!update.modifiedCount)throw new Error("unable to update user info")
+    },
+    updatePass: async (id, pass) => {
+        const rndInt = Math.floor(Math.random() * 10) + 1
+        pass = bcrypt.hashSync(pass, rndInt)
+        const update = await UserModel.updateOne({_id: id}, {"$set": {password: pass}})
+        if (!update.modifiedCount)throw new Error("Lỗi update password")
     }
 }
 module.exports = userService
