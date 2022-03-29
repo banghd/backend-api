@@ -1,0 +1,10 @@
+const router = require('express').Router()
+const accomodationController = require('../controllers/accomodationControllers')
+const { auth } = require("../middlewares/authentication")
+const { validateAccomodation } = require('../middlewares/validate')
+router.get('/', auth, accomodationController.getAccomodations)
+router.get('/:id', auth, accomodationController.getdata)
+router.post('/', auth, validateAccomodation, accomodationController.createAccomodation)
+router.put('/:id', auth, validateAccomodation, accomodationController.updateAccomodation)
+router.delete('/:id', auth, accomodationController.deleteAccomodation)
+module.exports = router
