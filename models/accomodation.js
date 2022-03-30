@@ -88,8 +88,9 @@ const AccomodSchema = new mongoose.Schema({
         default: false
     },
     isApproved: {
-        type: Boolean,
-        default: false
+        type: Number,
+        default: 1,
+        enum: [1,2,3]
     },
     postExpired: {
         type: Date,

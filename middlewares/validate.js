@@ -95,7 +95,6 @@ const validateAccomodation = async (req, res, next) => {
         },
         ownerId: joi.string(),
         images: joi.array(),
-        isApproved: joi.bool(),
         isRented: joi.bool(),
         postExpired: joi.string()
     })

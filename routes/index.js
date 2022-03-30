@@ -6,6 +6,7 @@ router.get("/", (req,res) => {
 router.use('/user', require('./users'))
 router.use('/file', require('./upload'))
 router.use('/accomodations', require('./accomodation'))
+router.use("/payment", require('./payment'))
 router.use("*", (req,res) => {
     res.redirect("/")
 })
