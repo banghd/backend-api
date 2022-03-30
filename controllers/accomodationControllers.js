@@ -64,6 +64,22 @@ const AccomodationControllers = {
                 message: e.message
             })
         }
+    },
+    updateRentedStatus: async (req, res) => {
+        try {
+            const {id} = req.params
+            if (!id) return res.status(400).json({
+                message: "Vui lòng cung cấp id"
+            })
+            await accomodationService.UpdateRentedStatus(id)
+            return res.status(200).json({
+                message: "Câp nhật trạng thái thuê trọ thành công"
+            })
+        } catch (e) {
+            return res.status(400).json({
+                message: e.message
+            })
+        }
     }
 }
 

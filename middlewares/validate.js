@@ -95,12 +95,16 @@ const validateAccomodation = async (req, res, next) => {
         },
         ownerId: joi.string(),
         images: joi.array(),
+        isApproved: joi.bool(),
+        isRented: joi.bool(),
+        postExpired: joi.string()
     })
     const {error, value} = schema.validate(data)
     console.log(value)
     if (error) {
         return res.status(400).json({message: error.message})
     }
+    value.postExpired = new Date(value.postExpired)
     req.body = value
     next()
 }

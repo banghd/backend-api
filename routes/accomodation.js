@@ -7,4 +7,5 @@ router.get('/:id', auth, accomodationController.getdata)
 router.post('/', auth, validateAccomodation, accomodationController.createAccomodation)
 router.put('/:id', auth, validateAccomodation, accomodationController.updateAccomodation)
 router.delete('/:id', auth, accomodationController.deleteAccomodation)
+router.put('/update-state/:id', auth, accomodationController.updateRentedStatus)
 module.exports = router

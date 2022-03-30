@@ -82,6 +82,20 @@ const AccomodSchema = new mongoose.Schema({
         public_id: String,
         url: String
     }],
-    ownerId: String
+    ownerId: String,
+    isRented: {
+        type: Boolean,
+        default: false
+    },
+    isApproved: {
+        type: Boolean,
+        default: false
+    },
+    postExpired: {
+        type: Date,
+        default: Date.now()
+    }
+}, {
+    timestamps: true
 })
 module.exports = mongoose.model('Accomodations', AccomodSchema)

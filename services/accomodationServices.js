@@ -33,6 +33,13 @@ const AccomodationService = {
             throw new Error("Không tìm thấy")
         }
         return data
+    },
+    UpdateRentedStatus: async (id)=>{
+        const accom = await AccomodationModel.findById(id).lean()
+        if (!accom){
+            throw new Error("Không tìm thấy nhà trọ với id: "+ id)
+        }
+        return AccomodationModel.updateOne({"_id": id}, {"$set": {"isRented" : !accom.isRented}})
     }
 }
 module.exports = AccomodationService
