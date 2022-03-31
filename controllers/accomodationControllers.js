@@ -80,6 +80,20 @@ const AccomodationControllers = {
                 message: e.message
             })
         }
+    },
+    getUserListAccomod: async (req, res) =>{
+        try {
+            const {id} = req.query
+            if (!id) return res.status(400).json({
+                message: "Vui lòng cung cấp id user"
+            })
+            const data = await accomodationService.getUserListAccomod(req.query)
+            return res.json(data)
+        } catch (e) {
+            return res.status(400).json({
+                message: e.message
+            })
+        }
     }
 }
 
