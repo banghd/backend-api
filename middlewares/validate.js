@@ -108,4 +108,21 @@ const validateAccomodation = async (req, res, next) => {
     next()
 }
 
-module.exports = {validateSignIn, validateLogIn, validateUser, validateAccomodation}
+const validateDeleteMultipleAccod = async (req, res, next) => {
+    const data = req.body
+    data.ownerId = req.user.id
+    const schema = joi.object({
+        ids: joi.array(),
+        ownerId: joi.string(),
+    })
+    const {error, value} = schema.validate(data)
+    console.log(value)
+    if (error) {
+        return res.status(400).json({message: error.message})
+    }
+    value.postExpired = new Date(value.postExpired)
+    req.body = value
+    next()
+}
+
+module.exports = {validateSignIn, validateLogIn, validateUser, validateAccomodation, validateDeleteMultipleAccod}

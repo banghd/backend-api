@@ -1,4 +1,4 @@
-const { getAccomodations } = require('../controllers/accomodationControllers')
+const { default: mongoose } = require('mongoose')
 const AccomodationModel = require('../models/accomodation')
 
 const AccomodationService = {
@@ -70,6 +70,25 @@ const AccomodationService = {
                 page: parseInt(payload.page)
             }
         }
-    }
+    },
+    deleteMultiple: async (ids, ownerId) => {
+        const session = await mongoose.startSession();
+        session.startTransaction();
+        try {
+            await Promise.all(ids.map(async id => {
+                await AccomodationModel.findOneAndDelete(
+                    { _id: id }, { ownerId: ownerId});
+            }));
+            await session.commitTransaction();
+            session.endSession();
+            return true;
+        } catch (error) {
+            // If an error occurred, abort the whole transaction and
+            // undo any changes that might have happened
+            await session.abortTransaction();
+            session.endSession();
+            throw error; 
+        }
+    },
 }
 module.exports = AccomodationService
