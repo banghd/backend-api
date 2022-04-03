@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const accomodationController = require('../controllers/accomodationControllers')
 const { auth } = require("../middlewares/authentication")
-const { validateAccomodation } = require('../middlewares/validate')
+const { validateAccomodation, validateDeleteMultipleAccod } = require('../middlewares/validate')
 router.get('/', auth, accomodationController.getAccomodations)
 router.get('/:id', auth, accomodationController.getdata)
 router.post('/', auth, validateAccomodation, accomodationController.createAccomodation)
@@ -9,4 +9,5 @@ router.put('/:id', auth, validateAccomodation, accomodationController.updateAcco
 router.delete('/:id', auth, accomodationController.deleteAccomodation)
 router.put('/update-state/:id', auth, accomodationController.updateRentedStatus)
 router.get('/user/accomod',auth, accomodationController.getUserListAccomod )
+router.post('/delete-multiple', auth, validateDeleteMultipleAccod, accomodationController.deleteMultiple )
 module.exports = router

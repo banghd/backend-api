@@ -94,7 +94,22 @@ const AccomodationControllers = {
                 message: e.message
             })
         }
-    }
+    },
+    deleteMultiple: async (req, res) => {
+        try {
+            const { ids, ownerId } = req.body
+            if (ids.length == 0) return res.status(400).json({message: "Vui lòng cung cấp ids"})
+            const data = await accomodationService.deleteMultiple(ids, ownerId)
+            return res.status(200).json({
+                data: data,
+                message: "Xoá các nhà trọ thành công!"
+            })
+        } catch (e) {
+            return res.status(400).json({
+                message: e.message
+            })
+        }
+    },
 }
 
 module.exports = AccomodationControllers
