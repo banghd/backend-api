@@ -77,7 +77,7 @@ const AccomodationService = {
         try {
             await Promise.all(ids.map(async id => {
                 await AccomodationModel.findOneAndDelete(
-                    { _id: id }, { ownerId: ownerId});
+                    { _id: id, ownerId: ownerId });
             }));
             await session.commitTransaction();
             session.endSession();
