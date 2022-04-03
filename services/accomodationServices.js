@@ -75,7 +75,7 @@ const AccomodationService = {
         const session = await mongoose.startSession();
         session.startTransaction();
         try {
-            await AccomodationModel.deleteMany({ownerId, _id: {$in : ids}})
+            await AccomodationModel.deleteMany({ownerId : ownerId, _id: {$in : ids}})
             await session.commitTransaction();
             session.endSession();
             return true;
