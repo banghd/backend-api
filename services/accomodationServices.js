@@ -75,10 +75,7 @@ const AccomodationService = {
         const session = await mongoose.startSession();
         session.startTransaction();
         try {
-            await Promise.all(ids.map(async id => {
-                await AccomodationModel.findOneAndDelete(
-                    { _id: id, ownerId: ownerId });
-            }));
+            await AccomodationModel.deleteMany({ownerId, _id: {$in : ids}})
             await session.commitTransaction();
             session.endSession();
             return true;

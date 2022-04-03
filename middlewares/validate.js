@@ -120,7 +120,6 @@ const validateDeleteMultipleAccod = async (req, res, next) => {
     if (error) {
         return res.status(400).json({message: error.message})
     }
-    value.postExpired = new Date(value.postExpired)
     req.body = value
     next()
 }
