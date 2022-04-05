@@ -58,9 +58,11 @@ const AccomodationService = {
         let limit, skip
         payload.limit ? limit = parseInt(payload.limit) : limit = 10
         skip = (parseInt(payload.page ? payload.page : "1") - 1 ) * limit
-        const option = {_id : -1, "detailedPost.title": 1}
-        if (payload.sortByDate == "1") option._id = 1
-        if (payload.sortByTitle == "-1")option["detailedPost.title"] = -1
+        const option = {}
+        if (payload.sortByDate == "1") option["_id"] = 1
+        if (payload.sortByDate == "-1") option["_id"] = -1
+        if (payload.sortByTitle == "-1")option["detailedPost.title"] = 1
+        if (payload.sortByTitle == "1")option["detailedPost.title"] = -1
         const data = await AccomodationModel.find(query).limit(limit).skip(skip).sort(option).lean()
         return {
             message : "ok",
