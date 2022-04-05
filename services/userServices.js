@@ -30,7 +30,7 @@ const userService = {
             email: data.email,
             role: data.role ? data.role : constants.renter,
             id : user._id
-        }, process.env.JWT_ACCESS_TOKEN, {expiresIn: "1d"})
+        }, process.env.JWT_ACCESS_TOKEN, {expiresIn: "5m"})
         const refreshToken = jwt.sign({
             email: data.email,
             role: data.role ? data.role : constants.renter,
@@ -51,7 +51,7 @@ const userService = {
             email: existUser.email,
             role: existUser.role,
             id: existUser._id
-        }, process.env.JWT_ACCESS_TOKEN , {expiresIn: "1d"})
+        }, process.env.JWT_ACCESS_TOKEN , {expiresIn: "5m"})
         const refreshToken = jwt.sign({
             email: existUser.email,
             role: existUser.role,
@@ -66,7 +66,7 @@ const userService = {
                 email: decoded.email,
                 role: decoded.role,
                 id: decoded._id
-            }, process.env.JWT_ACCESS_TOKEN, {expiresIn: "1d"})
+            }, process.env.JWT_ACCESS_TOKEN, {expiresIn: "5m"})
         } catch (e){
             console.log(e.message)
             throw new Error(e.message)
