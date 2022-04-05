@@ -92,7 +92,8 @@ const buildQuery = payload => {
         query.name = payload.name
     }
     if(payload?.birthDay) {
-        query.birthDay = moment(payload.birthDay, 'DD-MM-YY').toDate()
+        let date = new Date(payload.birthDay)
+        query.birthDay = date
     }
     if(payload.sex !== undefined)query.sex = payload.sex
 
