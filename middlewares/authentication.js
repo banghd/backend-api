@@ -8,7 +8,10 @@ const auth = async (req, res, next) => {
         if(!token) return res.status(400).json({message: "Invalid Authentication"})
 
         jwt.verify(token, process.env.JWT_ACCESS_TOKEN, (err, user) =>{
-            if(err) return res.status(400).json({message: "Invalid Authentication"})
+            if(err) {
+                if (err.message == "jwt expired") return res.status(400).json({message: "token hết hạn"})
+                return res.status(400).json({message: err.message})
+            }
 
             req.user = user
             next()
