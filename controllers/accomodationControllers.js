@@ -1,4 +1,5 @@
 const accomodationService = require('../services/accomodationServices')
+const userService = require("../services/userServices");
 
 const AccomodationControllers = {
     getdata: async (req, res) => {
@@ -110,6 +111,17 @@ const AccomodationControllers = {
             })
         }
     },
+    getAccomodationsFilter : async (req, res) =>{
+        try {
+            const {limit, page} = req.query
+            const data = await accomodationService.getListAccFilter(limit, page)
+            return res.json(data)
+        } catch (e){
+            return res.status(400).json({
+                message: e.message
+            })
+        }
+    }
 }
 
 module.exports = AccomodationControllers

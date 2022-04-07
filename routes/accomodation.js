@@ -10,4 +10,5 @@ router.delete('/:id', auth, accomodationController.deleteAccomodation)
 router.put('/update-state/:id', auth, accomodationController.updateRentedStatus)
 router.get('/user/accomod',auth, accomodationController.getUserListAccomod )
 router.post('/delete-multiple', auth, validateDeleteMultipleAccod, accomodationController.deleteMultiple )
+router.get("/filter/posted", auth, accomodationController.getAccomodationsFilter)
 module.exports = router

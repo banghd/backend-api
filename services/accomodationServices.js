@@ -90,5 +90,18 @@ const AccomodationService = {
             throw error; 
         }
     },
+    getListAccFilter: async (limit, page) =>{
+        const total = await AccomodationModel.countDocuments({status: "posted"})
+        limit ? limit * 1 : limit = 10
+        page ? page = parseInt(page) : page = 1
+        const data = await AccomodationModel.find({status: "posted"}).populate({
+            path: 'ownerId'
+        }).skip((page - 1)*limit).limit(limit)
+        return {
+            total,
+            page,
+            data
+        }
+    }
 }
 module.exports = AccomodationService

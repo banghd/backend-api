@@ -84,6 +84,32 @@ const UserControllers = {
                 message: e.message
             })
         }
+    },
+    getListUser : async (req, res) => {
+        try {
+            const {limit, page} = req.query
+            const data = await userService.getListUser(limit, page)
+            return res.json(data)
+
+        } catch (e) {
+            return res.status(400).json({
+                message: e.message
+            })
+        }
+    },
+    approvedUser : async (req, res) => {
+        try {
+            const {id} = req.params
+            const data = await userService.approveUser(id)
+            return res.json({
+                message: "phê duyệt thành công"
+            })
+
+        } catch (e) {
+            return res.status(400).json({
+                message: e.message
+            })
+        }
     }
 }
 

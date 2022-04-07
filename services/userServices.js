@@ -1,4 +1,5 @@
 const UserModel = require('../models/user')
+const AccomodModel = require('../models/accomodation')
 const bcrypt = require("bcrypt")
 const constants = require("../constants/roles")
 const jwt = require('jsonwebtoken')
@@ -82,6 +83,21 @@ const userService = {
         pass = bcrypt.hashSync(pass, rndInt)
         const update = await UserModel.updateOne({_id: id}, {"$set": {password: pass}})
         if (!update.modifiedCount)throw new Error("Lỗi update password")
+    },
+    getListUser: async (limit, page) => {
+        limit = limit ? limit * 1 : 10
+        page = page ? page * 1 : 1
+        const total = await UserModel.countDocuments({role: 2})
+        const data = await UserModel.find({role: 2}).skip(limit * (page -1) || 0).limit(limit || 10).select("-password")
+        return {
+            page,
+            limit,
+            total,
+            data
+        }
+    },
+    approveUser: async (id) =>{
+        return AccomodModel.findByIdAndUpdate(id, {isApproved: true})
     }
 }
 module.exports = userService

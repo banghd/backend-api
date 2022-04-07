@@ -82,7 +82,10 @@ const AccomodSchema = new mongoose.Schema({
         public_id: String,
         url: String
     }],
-    ownerId: String,
+    ownerId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Users'
+    },
     isRented: {
         type: Boolean,
         default: false
@@ -95,6 +98,10 @@ const AccomodSchema = new mongoose.Schema({
     postExpired: {
         type: Date,
         default: Date.now()
+    },
+    isPaid: {
+        type : Boolean,
+        default: false
     }
 }, {
     timestamps: true

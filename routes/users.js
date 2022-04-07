@@ -8,5 +8,7 @@ router.post("/log-in", validateLogIn, userCtrl.logIn)
 router.get("/token/refresh-token", userCtrl.refreshToken)
 router.put('/update',auth, validateUser, userCtrl.updateUser)
 router.post("/update-password", auth, userCtrl.updatePass)
-//router.post('/getListUser', auth, authAdmin, userCtrl.getListUser)
+router.get('/getListUser/owner', auth, authAdmin, userCtrl.getListUser)
+router.get('/approve/:id', auth, authAdmin, userCtrl.approvedAccomod)
+router.post("/approve-multi", auth, authAdmin, userCtrl.approvedAccomodMulti)
 module.exports = router
