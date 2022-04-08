@@ -54,7 +54,7 @@ const UserControllers = {
             })
         }
     },
-    updateUser : async (req, res) => {
+    updateUser: async (req, res) => {
         try {
             await userService.updateUser(req.body)
             return res.status(200).json({
@@ -85,7 +85,7 @@ const UserControllers = {
             })
         }
     },
-    getListUser : async (req, res) => {
+    getListUser: async (req, res) => {
         try {
             const {limit, page} = req.query
             const data = await userService.getListUser(limit, page)
@@ -97,14 +97,30 @@ const UserControllers = {
             })
         }
     },
-    approvedUser : async (req, res) => {
+    approvedAccomod: async (req, res) => {
         try {
             const {id} = req.params
-            const data = await userService.approveUser(id)
+            const data = await userService.approveAcc(id)
             return res.json({
                 message: "phê duyệt thành công"
             })
 
+        } catch (e) {
+            return res.status(400).json({
+                message: e.message
+            })
+        }
+    },
+    approvedAccomodMulti: async (req, res) => {
+        try {
+            const {id} = req.body
+            let data = await userService.approveMultiAcc(id)
+            if (data.modifiedCount == 0) {
+                return res.json({message: "không có id nào được update"})
+            }
+            return res.json({
+                message: "phê duyệt thành công"
+            })
         } catch (e) {
             return res.status(400).json({
                 message: e.message

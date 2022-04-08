@@ -96,8 +96,11 @@ const userService = {
             data
         }
     },
-    approveUser: async (id) =>{
+    approveAcc: async (id) =>{
         return AccomodModel.findByIdAndUpdate(id, {isApproved: true})
+    },
+    approveMultiAcc: async (ids) => {
+        return AccomodModel.updateMany({_id: {$in: ids}}, {isAppoved : true})
     }
 }
 module.exports = userService
