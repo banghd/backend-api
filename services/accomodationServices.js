@@ -90,5 +90,49 @@ const AccomodationService = {
             throw error; 
         }
     },
-}
+    getListRenterAcc: async (payload) =>{
+        const query = {status : "posted", isApproved: 2, isRented: false}
+        if (payload.type) query.type = parseInt(payload.type)
+        if(payload.district) query["address.district"] = payload.district
+        if(payload.ward) query["address.ward"] = payload.ward
+        let area = {}
+        let opt = {}
+        if(payload.minArea) area["$gte"] = parseInt(payload.minArea)
+        if(payload.maxArea) area["$lte"] = parseInt(payload.maxArea)
+
+        if (!isEmpty(area)) query.area = area
+        if (payload.bedRoom)query.bedRoom = parseInt(payload.bedRoom)
+        //sỏting
+        if (payload.sortByLike == "true") opt["likes"] = -1
+
+        const total = await AccomodationModel.countDocuments(query)
+
+        //paginate
+        let page, limit
+        query.page ?  page= parseInt(query.page)  : page = 1
+        query.limit ? limit = parseInt(query.limit) : limit = 10
+        const data = await AccomodationModel.find(query).populate({path : "ownerId"}).skip((page - 1) * limit).limit(limit).sort(opt)
+        return {
+            total,
+            data,
+            message: "ok"
+        }
+    },
+    increaseLikes :  async  (id) => {
+        return AccomodationModel.updateOne({_id: id}, {$inc : {likes: 1}})
+    },
+    increaseViews : async  (id) => {
+        return AccomodationModel.updateOne({_id: id}, {$inc: {view: 1}})
+    }
+    }
 module.exports = AccomodationService
+
+function isEmpty(obj) {
+    for(var prop in obj) {
+        if(Object.prototype.hasOwnProperty.call(obj, prop)) {
+            return false;
+        }
+    }
+
+    return JSON.stringify(obj) === JSON.stringify({});
+}

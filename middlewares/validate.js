@@ -54,10 +54,12 @@ const validateUser = async (req, res, next) => {
             url: joi.string().uri().required()
         },
         password: joi.string().trim()
-            .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).allow("")
+            .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).allow(""),
+        view: joi.number(),
+        point: joi.number(),
+        likes: joi.number()
     })
     const {error, value} = schema.validate(data)
-    console.log(value)
     if (error) {
         return res.status(400).json({message: error.message})
     }

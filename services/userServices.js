@@ -76,6 +76,7 @@ const userService = {
             const query = buildQuery(payload)
             const update = await UserModel.updateOne({_id: payload.id}, query)
             if (!update.modifiedCount)throw new Error("unable to update user info")
+        return UserModel.findOne({_id: payload.id})
     },
     updatePass: async (id, pass) => {
         const rndInt = Math.floor(Math.random() * 10) + 1
@@ -92,7 +93,7 @@ const buildQuery = payload => {
         query.name = payload.name
     }
     if(payload?.birthDay) {
-        let date = new Date(payload.birthDay)
+        let date = new moment(payload.birthDay, "YYYY/MM/DD")
         query.birthDay = date
     }
     if(payload.sex !== undefined)query.sex = payload.sex

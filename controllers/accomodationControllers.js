@@ -110,6 +110,47 @@ const AccomodationControllers = {
             })
         }
     },
+    getListRenter : async (req, res) => {
+        try {
+            const data = await accomodationService.getListRenterAcc(req.query)
+            return res.status(200).json(data)
+        }
+        catch (e) {
+            return res.status(400).json({
+                message: e.message
+            })
+        }
+    },
+    increaseLikes: async (req,res) => {
+        try {
+            const {id} = req.params
+            if(!id) return res.status(400).json({message: "Vui lòng cung cấp ids"})
+            await accomodationService.increaseLikes(id)
+            return res.status(200).json({
+                message: "ok"
+            })
+        } catch (e) {
+            return res.status(400).json({
+                message: e.message
+            })
+        }
+
+    },
+    increseViews : async (req,res) => {
+        try {
+            const {id} = req.params
+            if(!id) return res.status(400).json({message: "Vui lòng cung cấp ids"})
+            await accomodationService.increaseViews(id)
+            return res.status(200).json({
+                message: "ok"
+            })
+        } catch (e) {
+            return res.status(400).json({
+                message: e.message
+            })
+        }
+
+    }
 }
 
 module.exports = AccomodationControllers
