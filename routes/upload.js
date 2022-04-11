@@ -28,7 +28,6 @@ router.post('/upload', async (req, res) => {
         }
 
         if (!Array.isArray(files) && !files.isNull) {
-            console.log("1 image")
             files = [files]
         }
         const data = await bluebird.map(files, async (file) => {

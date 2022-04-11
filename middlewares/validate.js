@@ -101,7 +101,6 @@ const validateAccomodation = async (req, res, next) => {
         postExpired: joi.string()
     })
     const {error, value} = schema.validate(data)
-    console.log(value)
     if (error) {
         return res.status(400).json({message: error.message})
     }
@@ -118,7 +117,6 @@ const validateDeleteMultipleAccod = async (req, res, next) => {
         ownerId: joi.string(),
     })
     const {error, value} = schema.validate(data)
-    console.log(value)
     if (error) {
         return res.status(400).json({message: error.message})
     }
