@@ -125,7 +125,24 @@ const AccomodationControllers = {
         try {
             const {id} = req.params
             if(!id) return res.status(400).json({message: "Vui lòng cung cấp ids"})
-            await accomodationService.increaseLikes(id)
+            const {id: userId} = req.user
+            await accomodationService.increaseLikes(id, userId)
+            return res.status(200).json({
+                message: "ok"
+            })
+        } catch (e) {
+            return res.status(400).json({
+                message: e.message
+            })
+        }
+
+    },
+    decreaseLikes: async (req,res) => {
+        try {
+            const {id} = req.params
+            if(!id) return res.status(400).json({message: "Vui lòng cung cấp ids"})
+            const {id: userId} = req.user
+            await accomodationService.decreaseLikes(id, userId)
             return res.status(200).json({
                 message: "ok"
             })

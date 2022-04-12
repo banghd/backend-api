@@ -12,5 +12,6 @@ router.get('/user/accomod',auth, accomodationController.getUserListAccomod )
 router.post('/delete-multiple', auth, validateDeleteMultipleAccod, accomodationController.deleteMultiple )
 router.get('/renter/list', accomodationController.getListRenter)
 router.post('/increase-like/:id', auth, accomodationController.increaseLikes)
+router.delete('/decrease-like/:id', auth, accomodationController.decreaseLikes)
 router.post('/increase-view/:id', accomodationController.increseViews)
 module.exports = router

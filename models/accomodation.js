@@ -114,6 +114,10 @@ const AccomodSchema = new mongoose.Schema({
     isPaid : {
         type: Boolean,
         default: false
+    },
+    userLiked : {
+        type: Array,
+        default: []
     }
 }, {
     timestamps: true

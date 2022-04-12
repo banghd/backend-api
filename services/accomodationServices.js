@@ -120,8 +120,11 @@ const AccomodationService = {
             message: "ok"
         }
     },
-    increaseLikes :  async  (id) => {
-        return AccomodationModel.updateOne({_id: id}, {$inc : {likes: 1}})
+    increaseLikes :  async  (id, userId) => {
+        return AccomodationModel.updateOne({_id: id}, {$inc : {likes: 1}, $push: {userLiked : userId}})
+    },
+    decreaseLikes :  async  (id, userId) => {
+        return AccomodationModel.updateOne({_id: id}, {$inc : {likes: -1}, $pull: {userLiked: userId}})
     },
     increaseViews : async  (id) => {
         return AccomodationModel.updateOne({_id: id}, {$inc: {view: 1}})
