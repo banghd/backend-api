@@ -95,6 +95,7 @@ const AccomodationService = {
         if (payload.type) query.type = parseInt(payload.type)
         if(payload.district) query["address.district"] = payload.district
         if(payload.ward) query["address.ward"] = payload.ward
+        if(payload.public_location)query.public_location = {$regex: payload.public_location}
         let area = {}
         let opt = {}
         if(payload.minArea) area["$gte"] = parseInt(payload.minArea)
@@ -103,6 +104,7 @@ const AccomodationService = {
         if (!isEmpty(area)) query.area = area
         if (payload.bedRoom)query.bedRoom = parseInt(payload.bedRoom)
         //sỏting
+        if (payload.sortByLike == "false")opt["likes"] = 1
         if (payload.sortByLike == "true") opt["likes"] = -1
 
         const total = await AccomodationModel.countDocuments(query)
