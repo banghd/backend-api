@@ -10,7 +10,7 @@ router.delete('/:id', auth, accomodationController.deleteAccomodation)
 router.put('/update-state/:id', auth, accomodationController.updateRentedStatus)
 router.get('/user/accomod',auth, accomodationController.getUserListAccomod )
 router.post('/delete-multiple', auth, validateDeleteMultipleAccod, accomodationController.deleteMultiple )
-router.get('/renter/list', auth, accomodationController.getListRenter)
+router.get('/renter/list', accomodationController.getListRenter)
 router.post('/increase-like/:id', auth, accomodationController.increaseLikes)
 router.post('/increase-view/:id', auth, accomodationController.increseViews)
 module.exports = router
