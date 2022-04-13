@@ -16,6 +16,7 @@ const AccomodationControllers = {
     },
     createAccomodation: async (req, res, auth) => {
         try {
+            if (Math.abs(req.body.postExpired - new Date()) / (1000 * 3600 * 24) < 10) req.body.isPaid = true
             const result = await accomodationService.createAccomodation(req.body)
             return res.status(200).json({
                 data: result,
