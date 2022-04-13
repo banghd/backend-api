@@ -14,4 +14,6 @@ router.get('/renter/list', accomodationController.getListRenter)
 router.post('/increase-like/:id', auth, accomodationController.increaseLikes)
 router.delete('/decrease-like/:id', auth, accomodationController.decreaseLikes)
 router.post('/increase-view/:id', accomodationController.increseViews)
+router.get('/payment/:id', auth, accomodationController.payAcc)
+
 module.exports = router

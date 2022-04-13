@@ -167,6 +167,20 @@ const AccomodationControllers = {
             })
         }
 
+    },
+    payAcc : async  (req, res) => {
+        try {
+            const {id} = req.params
+            if(!id) return res.status(400).json({message: "Vui lòng cung cấp ids"})
+            await accomodationService.payAcc(id)
+            return res.status(200).json({
+                message: "ok"
+            })
+        } catch (e) {
+            return res.status(400).json({
+                message: e.message
+            })
+        }
     }
 }
 

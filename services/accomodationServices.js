@@ -128,6 +128,9 @@ const AccomodationService = {
     },
     increaseViews : async  (id) => {
         return AccomodationModel.updateOne({_id: id}, {$inc: {view: 1}})
+    },
+    payAcc : async (id) => {
+        return AccomodationModel.updateOne({_id: id}, {isPaid: true})
     }
     }
 module.exports = AccomodationService
