@@ -108,6 +108,7 @@ const AccomodationService = {
         if (payload.sortByLike == "true") opt["likes"] = -1
 
         const total = await AccomodationModel.countDocuments(query)
+        if (isEmpty(opt)) opt = {_id: -1}
 
         //paginate
         let page, limit
