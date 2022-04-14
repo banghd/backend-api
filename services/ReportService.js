@@ -8,13 +8,15 @@ const reportService = {
             metadata: payload.comment,
             createBy: {
                 userId: user._id,
-                userName: user.name
+                userName: user.name,
+                avatar: user.avatar
             },
             postId: payload.id
         })
         return {
             coment: payload.comment,
-            username : user.name
+            username : user.name,
+            avatar: user.avatar
         }
     },
     createReport: async (payload) => {
