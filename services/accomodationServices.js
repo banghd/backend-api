@@ -3,7 +3,7 @@ const AccomodationModel = require('../models/accomodation')
 
 const AccomodationService = {
     getAccomodation: async (id) => {
-        const data = await AccomodationModel.findOne({_id: id})
+        const data = await AccomodationModel.findOne({_id: id}).populate("ownerId")
         if (!data) {
             throw new Error("Không tìm thấy")
         }
