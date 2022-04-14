@@ -72,7 +72,7 @@ const validateAccomodation = async (req, res, next) => {
     if (req.method == 'POST') data.ownerId = req.user.id
     if (data.status == "draft") return next()
     if (data.update == "extended") {
-        value.postExpired = new Date(value.postExpired)
+        req.body.postExpired = new Date(req.body.postExpired)
         return next()
     }
     const schema = joi.object({
