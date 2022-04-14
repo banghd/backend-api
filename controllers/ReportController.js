@@ -8,9 +8,10 @@ const reportCtrl = {
                 message: "vui lòng cung cấp id"
             })
             req.body.userId = req.user.id
-            await reportService.createComment(req.body)
+            const data = await reportService.createComment(req.body)
             return res.json({
-                message: "ok"
+                message: "ok",
+                data
             })
         }
         catch (e) {

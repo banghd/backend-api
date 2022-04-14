@@ -12,6 +12,10 @@ const reportService = {
             },
             postId: payload.id
         })
+        return {
+            coment: payload.comment,
+            username : user.name
+        }
     },
     createReport: async (payload) => {
         const user = await UserModel.findById(payload.userId)
