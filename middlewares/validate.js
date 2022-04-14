@@ -100,7 +100,8 @@ const validateAccomodation = async (req, res, next) => {
         images: joi.array(),
         isRented: joi.bool(),
         postExpired: joi.string(),
-        moneyPayment: joi.number()
+        moneyPayment: joi.number(),
+        update: joi.string()
     })
     const {error, value} = schema.validate(data)
     if (error) {
