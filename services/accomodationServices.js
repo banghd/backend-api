@@ -1,12 +1,17 @@
 const { default: mongoose } = require('mongoose')
 const AccomodationModel = require('../models/accomodation')
+const {owner} = require("../constants/roles");
 
 const AccomodationService = {
     getAccomodation: async (id) => {
-        const data = await AccomodationModel.findOne({_id: id}).populate("ownerId")
+        const data = await AccomodationModel.findOne({_id: id}).populate({
+            path: "ownerId",
+        })
         if (!data) {
             throw new Error("Không tìm thấy")
         }
+        renameProperty(data, "ownerId", "userInfo")
+        console.log(data)
         return data
     },
     createAccomodation: async (data) => {
@@ -17,6 +22,7 @@ const AccomodationService = {
         if (!existAccomodation) {
             throw new Error("Nhà trọ không tồn tại !")
         }
+        if (data.update) return  AccomodationModel.updateOne({_id: id}, {postExpired: data.postExpired})
         return AccomodationModel.updateOne({_id: id}, data)
     },
     deleteAccomodation: async (id) => {
@@ -144,4 +150,9 @@ function isEmpty(obj) {
     }
 
     return JSON.stringify(obj) === JSON.stringify({});
+}
+
+function renameProperty(obj, oldName, newName) {
+    obj[newName] = obj[oldName];
+    delete obj[oldName];
 }

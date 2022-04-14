@@ -1,4 +1,5 @@
 const accomodationService = require('../services/accomodationServices')
+const {owner} = require("../constants/roles");
 
 const AccomodationControllers = {
     getdata: async (req, res) => {
