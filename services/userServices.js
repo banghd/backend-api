@@ -24,7 +24,7 @@ const userService = {
             email: data.email,
             password: hashPass,
             role: data.role,
-            isApproved: data.role !== constants.owner
+            state: data.role !== constants.owner ? 2 : 1
         })
         const accessToken = jwt.sign({
             email: data.email,
@@ -83,6 +83,28 @@ const userService = {
         pass = bcrypt.hashSync(pass, rndInt)
         const update = await UserModel.updateOne({_id: id}, {"$set": {password: pass}})
         if (!update.modifiedCount)throw new Error("Lỗi update password")
+    },
+    getSummary: async () => {
+        const renters = await UserModel.where('role', 3).count() ;
+        const owners = await UserModel.where('role', 2).count();
+        const notApproved = await UserModel.where('role', 2).where('status', 1).count();
+        const approved = owners - notApproved
+        return {
+            renters,
+            owners,
+            approved,
+            notApproved
+        }
+    },
+    getAllOwners: async (req) => {
+        const query = req.query
+        let page, limit
+        query.page ?  page= parseInt(query.page)  : page = 1
+        query.limit ? limit = parseInt(query.limit) : limit = 10
+        query.role = 2
+        console.log('query', query)
+        const data = await UserModel.find(query).skip((page - 1) * limit).limit(limit).sort({'createdAt': 'desc'})
+        return data
     }
 }
 module.exports = userService

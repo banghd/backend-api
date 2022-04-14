@@ -52,7 +52,7 @@ const AccomodationService = {
         if (payload.title) {
             query["detailedPost.title"] = {"$regex": payload.title}
         }
-        if(payload.isApproved)query.isApproved = parseInt(payload.isApproved)
+        if(payload.state)query.state = parseInt(payload.state)
 
         const total = await AccomodationModel.countDocuments(query)
         //pagination
@@ -128,8 +128,28 @@ const AccomodationService = {
     },
     increaseViews : async  (id) => {
         return AccomodationModel.updateOne({_id: id}, {$inc: {view: 1}})
+    },
+    getSummary: async ()=> {
+        const posts = await AccomodationModel.count()
+        const paid = await AccomodationModel.where('isPaid', true).count()
+        const notApprove = await AccomodationModel.where('state', 1)
+        const approved = posts - notApprove
+        return {
+            posts,
+            paid,
+            approved,
+            notApprove
+        }
+    },
+    getAllPosts: async (req) => {
+        const query = req.query
+        let page, limit
+        query.page ?  page= parseInt(query.page)  : page = 1
+        query.limit ? limit = parseInt(query.limit) : limit = 10
+        const data = await AccomodationModel.find(query).skip((page - 1) * limit).limit(limit).sort({'createdAt': 'desc'})
+        return data
     }
-    }
+}
 module.exports = AccomodationService
 
 function isEmpty(obj) {

@@ -90,7 +90,7 @@ const AccomodSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    isApproved: {
+    state: {
         type: Number,
         default: 1,
         enum: [1,2,3]
