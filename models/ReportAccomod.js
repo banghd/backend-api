@@ -15,7 +15,7 @@ const ReportSchema = new mongoose.Schema({
         userId: String,
         userName: String,
         avatar: {
-            type: Object
+            type: mongoose.Schema.Types.Mixed
         }
     }
 }, {
