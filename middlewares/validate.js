@@ -71,6 +71,7 @@ const validateAccomodation = async (req, res, next) => {
     const data = req.body
     if (req.method == 'POST') data.ownerId = req.user.id
     if (data.status == "draft") return next()
+    if (data.update == "extended") return next()
     const schema = joi.object({
         status: joi.string().valid("draft", "posted", "approved"),
         type: joi.number().required(),
