@@ -44,7 +44,6 @@ const reportCtrl = {
             if (!id) return res.status(400).json({
                 message: "vui lòng cung cấp id"
             })
-            req.body.userId = req.user.id
             let data = await reportService.listComment(id)
             return res.json(data)
         }
