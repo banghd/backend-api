@@ -91,7 +91,7 @@ const AccomodationService = {
         }
     },
     getListRenterAcc: async (payload) =>{
-        const query = {status : "posted", isApproved: 2, isRented: false}
+        const query = {status : "posted", state: 2, isRented: false}
         if (payload.type) query.type = parseInt(payload.type)
         if(payload.district) query["address.district"] = payload.district
         if(payload.ward) query["address.ward"] = payload.ward
@@ -132,7 +132,7 @@ const AccomodationService = {
     getSummary: async ()=> {
         const posts = await AccomodationModel.count()
         const paid = await AccomodationModel.where('isPaid', true).count()
-        const notApprove = await AccomodationModel.where('state', 1)
+        const notApprove = await AccomodationModel.where('state', 1).count()
         const approved = posts - notApprove
         return {
             posts,
