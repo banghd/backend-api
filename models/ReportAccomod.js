@@ -13,7 +13,10 @@ const ReportSchema = new mongoose.Schema({
     },
     createBy: {
         userId: String,
-        userName: String
+        userName: String,
+        avatar: {
+            type: mongoose.Schema.Types.Mixed
+        }
     }
 }, {
     timestamps: true

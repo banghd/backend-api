@@ -115,6 +115,10 @@ const AccomodSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    moneyPayment : {
+        type: Number,
+        default: 0
+    },
     userLiked : {
         type: Array,
         default: []

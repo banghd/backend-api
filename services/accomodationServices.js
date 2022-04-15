@@ -1,12 +1,17 @@
 const { default: mongoose } = require('mongoose')
 const AccomodationModel = require('../models/accomodation')
+const {owner} = require("../constants/roles");
 
 const AccomodationService = {
     getAccomodation: async (id) => {
-        const data = await AccomodationModel.findOne({_id: id})
+        const data = await AccomodationModel.findOne({_id: id}).populate({
+            path: "ownerId",
+        })
         if (!data) {
             throw new Error("Không tìm thấy")
         }
+        renameProperty(data, "ownerId", "userInfo")
+        console.log(data)
         return data
     },
     createAccomodation: async (data) => {
@@ -17,6 +22,7 @@ const AccomodationService = {
         if (!existAccomodation) {
             throw new Error("Nhà trọ không tồn tại !")
         }
+        if (data.update) return  AccomodationModel.updateOne({_id: id}, {postExpired: data.postExpired})
         return AccomodationModel.updateOne({_id: id}, data)
     },
     deleteAccomodation: async (id) => {
@@ -108,6 +114,7 @@ const AccomodationService = {
         if (payload.sortByLike == "true") opt["likes"] = -1
 
         const total = await AccomodationModel.countDocuments(query)
+        if (isEmpty(opt)) opt = {_id: -1}
 
         //paginate
         let page, limit
@@ -148,6 +155,9 @@ const AccomodationService = {
         query.limit ? limit = parseInt(query.limit) : limit = 10
         const data = await AccomodationModel.find(query).skip((page - 1) * limit).limit(limit).sort({'createdAt': 'desc'})
         return data
+    },
+    payAcc : async (id) => {
+        return AccomodationModel.updateOne({_id: id}, {isPaid: true})
     }
 }
 module.exports = AccomodationService
@@ -160,4 +170,9 @@ function isEmpty(obj) {
     }
 
     return JSON.stringify(obj) === JSON.stringify({});
+}
+
+function renameProperty(obj, oldName, newName) {
+    obj[newName] = obj[oldName];
+    delete obj[oldName];
 }

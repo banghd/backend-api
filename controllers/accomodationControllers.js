@@ -1,4 +1,5 @@
 const accomodationService = require('../services/accomodationServices')
+const {owner} = require("../constants/roles");
 
 const AccomodationControllers = {
     getdata: async (req, res) => {
@@ -16,6 +17,7 @@ const AccomodationControllers = {
     },
     createAccomodation: async (req, res, auth) => {
         try {
+            if (Math.abs(req.body.postExpired - new Date()) / (1000 * 3600 * 24) < 10) req.body.isPaid = true
             const result = await accomodationService.createAccomodation(req.body)
             return res.status(200).json({
                 data: result,
@@ -181,21 +183,20 @@ const AccomodationControllers = {
                 message: e.message
             })
         }
-
     },
-    getAllPosts : async (req,res) => {
+    payAcc : async  (req, res) => {
         try {
-            const result = await accomodationService.getAllPosts(req)
+            const {id} = req.params
+            if(!id) return res.status(400).json({message: "Vui lòng cung cấp ids"})
+            await accomodationService.payAcc(id)
             return res.status(200).json({
-                message: "success",
-                data: result
+                message: "ok"
             })
         } catch (e) {
             return res.status(400).json({
                 message: e.message
             })
         }
-
     }
 }
 
