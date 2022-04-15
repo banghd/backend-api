@@ -15,7 +15,7 @@ router.post('/increase-like/:id', auth, accomodationController.increaseLikes)
 router.delete('/decrease-like/:id', auth, accomodationController.decreaseLikes)
 router.post('/increase-view/:id', accomodationController.increseViews)
 router.get('/manage/summary', auth, authAdmin, accomodationController.getSummary)
-router.get('/manage/posts', auth, authAdmin, accomodationController.getAllPosts)
+//router.get('/manage/posts', auth, authAdmin, accomodationController.getAllPosts)
 router.get('/payment/:id', auth, accomodationController.payAcc)
 
 module.exports = router
