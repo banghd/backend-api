@@ -49,10 +49,11 @@ const userSchema = new mongoose.Schema({
         }
     } ,
     zalo : String,
-    isApproved: {
-        type: Boolean,
-        default: true
-    }
+    state: {
+        type: Number,
+        default: 1,
+        enum: [1,2,3]
+    },
 }, {
     timestamps: true
 })

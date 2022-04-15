@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const accomodationController = require('../controllers/accomodationControllers')
-const { auth } = require("../middlewares/authentication")
+const { auth, authAdmin } = require("../middlewares/authentication")
 const { validateAccomodation, validateDeleteMultipleAccod } = require('../middlewares/validate')
 router.get('/', auth, accomodationController.getAccomodations)
 router.get('/:id', accomodationController.getdata)
@@ -14,6 +14,8 @@ router.get('/renter/list', accomodationController.getListRenter)
 router.post('/increase-like/:id', auth, accomodationController.increaseLikes)
 router.delete('/decrease-like/:id', auth, accomodationController.decreaseLikes)
 router.post('/increase-view/:id', accomodationController.increseViews)
+router.get('/manage/summary', auth, authAdmin, accomodationController.getSummary)
+router.get('/manage/posts', auth, authAdmin, accomodationController.getAllPosts)
 router.get('/payment/:id', auth, accomodationController.payAcc)
 
 module.exports = router

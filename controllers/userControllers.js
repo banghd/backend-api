@@ -85,6 +85,34 @@ const UserControllers = {
                 message: e.message
             })
         }
+    },
+    getSummary: async (req, res) => {
+        console.log('herr')
+        try {
+            const result = await userService.getSummary()
+            console.log('result', result)
+            return res.status(200).json({
+                message: "Success",
+                data: result
+            })
+        } catch (e) {
+            return res.status(400).json({
+                message: e.message
+            })
+        }
+    },
+    getAllOwners: async (req, res) => {
+        try {
+            const result = await userService.getAllOwners(req)
+            return res.status(200).json({
+                message: "Success",
+                data: result
+            })
+        } catch (error) {
+            return res.status(400).json({
+                message: e.message
+            })
+        }
     }
 }
 

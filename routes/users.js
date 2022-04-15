@@ -8,5 +8,8 @@ router.post("/log-in", validateLogIn, userCtrl.logIn)
 router.get("/token/refresh-token", userCtrl.refreshToken)
 router.put('/update',auth, validateUser, userCtrl.updateUser)
 router.post("/update-password", auth, userCtrl.updatePass)
+router.get("/manage/summary", auth, authAdmin, userCtrl.getSummary)
+router.get("/manage/owners", auth, authAdmin, userCtrl.getAllOwners)
+
 //router.post('/getListUser', auth, authAdmin, userCtrl.getListUser)
 module.exports = router

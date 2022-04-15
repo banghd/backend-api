@@ -170,6 +170,20 @@ const AccomodationControllers = {
         }
 
     },
+    getSummary : async (req,res) => {
+        console.log('herrr')
+        try {
+            const result = await accomodationService.getSummary()
+            return res.status(200).json({
+                message: "success",
+                data: result
+            })
+        } catch (e) {
+            return res.status(400).json({
+                message: e.message
+            })
+        }
+    },
     payAcc : async  (req, res) => {
         try {
             const {id} = req.params
