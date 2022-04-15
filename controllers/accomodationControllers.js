@@ -178,12 +178,13 @@ const AccomodationControllers = {
                 message: "success",
                 data: result
             })
-        } catch (e) {
-            return res.status(400).json({
-                message: e.message
-            })
+            } catch (e) {
+                return res.status(400).json({
+                    message: e.message
+                })
         }
-    },
+     },
+    
     payAcc : async  (req, res) => {
         try {
             const {id} = req.params
@@ -197,6 +198,21 @@ const AccomodationControllers = {
                 message: e.message
             })
         }
+
+    },
+    getAllPosts : async (req,res) => {
+        try {
+            const result = await accomodationService.getAllPosts(req)
+            return res.status(200).json({
+                message: "success",
+                data: result
+            })
+        } catch (e) {
+            return res.status(400).json({
+                message: e.message
+            })
+        }
+
     }
 }
 
