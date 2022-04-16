@@ -127,7 +127,9 @@ const userService = {
             email: data.email,
             role: data.role,
             state: data.role !== constants.owner ? 2 : 1,
-            avatar: data.picture
+            avatar: {
+                url: data.picture
+            }
         })
         const accessToken = jwt.sign({
             email: data.email,
