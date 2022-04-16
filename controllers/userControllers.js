@@ -131,8 +131,8 @@ const UserControllers = {
             const { name, email, picture } = ticket.getPayload()
             let data = { name, email, picture, role }
 
-            let {accessToken, resetToken }= await userService.UpsertUser(data)
-            return res.json({data : {accessToken, resetToken}, message: "Log in via google thành công"})
+            let {accessToken, refreshToken }= await userService.UpsertUser(data)
+            return res.json({data : {accessToken, refreshToken}, message: "Log in via google thành công"})
 
         } catch (e) {
             return res.status(400).json({
