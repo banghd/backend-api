@@ -105,6 +105,41 @@ const userService = {
         console.log('query', query)
         const data = await UserModel.find(query).skip((page - 1) * limit).limit(limit).sort({'createdAt': 'desc'})
         return data
+    },
+    UpsertUser : async (data) =>{
+        const existUser = await UserModel.findOne({email : data.email})
+        if (existUser) {
+            const accessToken = jwt.sign({
+                email: existUser.email,
+                role: existUser.role,
+                id: existUser._id
+            }, process.env.JWT_ACCESS_TOKEN , {expiresIn: "1d"})
+            const refreshToken = jwt.sign({
+                email: existUser.email,
+                role: existUser.role,
+                id: existUser._id
+            }, process.env.JWT_REFRESH_TOKEN, {expiresIn: "7d"})
+            return {accessToken, refreshToken}
+        }
+        //Create new user
+        const user = await UserModel.create({
+            name: data.name,
+            email: data.email,
+            role: data.role,
+            state: data.role !== constants.owner ? 2 : 1,
+            avatar: data.picture
+        })
+        const accessToken = jwt.sign({
+            email: data.email,
+            role: data.role ? data.role : constants.renter,
+            id : user._id
+        }, process.env.JWT_ACCESS_TOKEN, {expiresIn: "1d"})
+        const refreshToken = jwt.sign({
+            email: data.email,
+            role: data.role ? data.role : constants.renter,
+            id : user._id
+        }, process.env.JWT_REFRESH_TOKEN, {expiresIn: "7d"})
+        return {accessToken, refreshToken}
     }
 }
 module.exports = userService

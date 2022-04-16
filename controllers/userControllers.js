@@ -113,6 +113,32 @@ const UserControllers = {
                 message: e.message
             })
         }
+    },
+    logInGG : async (req, res) => {
+        try {
+            const {token, role} = req.body
+            if (!token) return res.status(400).json({
+                message: "invalid token"
+            })
+            const { OAuth2Client } = require('google-auth-library')
+            const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID)
+
+            const ticket = await client.verifyIdToken({
+                idToken: token,
+                audience: process.env.GOOGLE_CLIENT_ID
+            })
+
+            const { name, email, picture } = ticket.getPayload()
+            let data = { name, email, picture, role }
+
+            let {accessToken, resetToken }= await userService.UpsertUser(data)
+            return res.json({data : {accessToken, resetToken}, message: "Log in via google thành công"})
+
+        } catch (e) {
+            return res.status(400).json({
+                message: e.message
+            })
+        }
     }
 }
 
