@@ -1,4 +1,6 @@
 const UserModel = require('../models/user')
+const AccomdModel =require('../models/accomodation')
+const ReportModel = require('../models/ReportAccomod')
 const bcrypt = require("bcrypt")
 const constants = require("../constants/roles")
 const jwt = require('jsonwebtoken')
@@ -179,6 +181,13 @@ const userService = {
         const rndInt = Math.floor(Math.random() * 10) + 1
         const hashPass = bcrypt.hashSync(password, rndInt)
         return UserModel.updateOne({email : decode.email}, {$set : {password: hashPass}})
+    },
+    getReport : async (id) =>{
+        const postedAcc = await AccomdModel.countDocuments({status: "posted", ownerId : id})
+        const likedPost = await AccomdModel.find({ownerId : id, likes: {$gt : 0}}).lean()
+        if (likedPost && likedPost.length ){
+
+        }
     }
 }
 module.exports = userService
