@@ -160,8 +160,8 @@ const userService = {
         const transporter = nodemail.createTransport({
             service: 'gmail',
             auth: {
-                user: "minhbangod@gmail.com",
-                pass: "bangyeungan"
+                user: process.env.MYEMAIL,
+                pass: process.env.MYPASSEMAIL
             }
         })
         let mailOptions = {
