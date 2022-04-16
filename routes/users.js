@@ -12,7 +12,7 @@ router.get("/manage/summary", auth, authAdmin, userCtrl.getSummary)
 router.get("/manage/owners", auth, authAdmin, userCtrl.getAllOwners)
 router.post('/google/login', userCtrl.logInGG)
 router.post("/request-password", userCtrl.request_password)
-router.get("/reset-password", userCtrl.resetPassword)
+router.post("/reset-password", userCtrl.resetPassword)
 
 //router.post('/getListUser', auth, authAdmin, userCtrl.getListUser)
 module.exports = router
