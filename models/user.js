@@ -54,6 +54,7 @@ const userSchema = new mongoose.Schema({
         default: 1,
         enum: [1,2,3]
     },
+    resetToken: String
 }, {
     timestamps: true
 })

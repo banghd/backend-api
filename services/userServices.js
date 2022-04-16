@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt")
 const constants = require("../constants/roles")
 const jwt = require('jsonwebtoken')
 const moment = require('moment')
+const nodemail = require("nodemailer")
 
 const {isString} = require("mocha/lib/utils");
 const userService = {
@@ -142,6 +143,42 @@ const userService = {
             id : user._id
         }, process.env.JWT_REFRESH_TOKEN, {expiresIn: "7d"})
         return {accessToken, refreshToken}
+    },
+    request_pass : async (email) => {
+        const user = await UserModel.findOne({email})
+        if(!user) throw new Error("Không tìm thấy email")
+        if(user.resetToken){
+            const payload = jwt.decode(user.resetToken, {complete: true}).payload
+            console.log(payload.iat)
+            if (payload.iat + 300 > Date.now() /1000){
+                throw new Error("Vui lòng chờ 5 phút trước khi request lại")
+            }
+        }//create Token
+        const token = jwt.sign({email}, process.env.JWT_REFRESH_TOKEN,{expiresIn: "5m"})
+        await UserModel.updateOne({email}, {$set: {resetToken : token}})
+        //send mail
+        const transporter = nodemail.createTransport({
+            service: 'gmail',
+            auth: {
+                user: "minhbangod@gmail.com",
+                pass: "bangyeungan"
+            }
+        })
+        let mailOptions = {
+            from: process.env.MYEMAIL,
+            to: email,
+            subject: 'Sending Email request Password',
+            html: require('../constants/resetmailTemplate').generateResetMail(user.name, token)
+        };
+        return transporter.sendMail(mailOptions)
+    },
+    resetPassword :async (token, password) => {
+        //verify token
+        const decode = jwt.verify(token, process.env.JWT_REFRESH_TOKEN)
+        //hass pass
+        const rndInt = Math.floor(Math.random() * 10) + 1
+        const hashPass = bcrypt.hashSync(password, rndInt)
+        return UserModel.updateOne({email : decode.email}, {$set : {password: hashPass}})
     }
 }
 module.exports = userService

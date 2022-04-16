@@ -139,6 +139,38 @@ const UserControllers = {
                 message: e.message
             })
         }
+    },
+    request_password : async (req, res) => {
+        try {
+            const {email} = req.body
+            if(!email) return res.status(400).json({
+                message: "vui lòng cung cấp email"
+            })
+            const response = await userService.request_pass(email)
+            return res.json({
+                message: "Vui lòng kiểm tra email",
+                response
+            })
+        }
+        catch (e) {
+            return res.status(400).json({
+                message: e.message
+            })
+        }
+    },
+    resetPassword : async (req, res) =>{
+        const {token, password} = req.query
+        try {
+            if(!token || password) return res.status(400).json({
+                message: "không có token hoặc password"
+            })
+            await userService.resetPassword(token, password)
+            return res.json({message: "đổi mật khẩu thành công"})
+        } catch (e) {
+            return res.status(400).json({
+                message: e.message
+            })
+        }
     }
 }
 
