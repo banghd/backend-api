@@ -10,6 +10,7 @@ router.put('/update',auth, validateUser, userCtrl.updateUser)
 router.post("/update-password", auth, userCtrl.updatePass)
 router.get("/manage/summary", auth, authAdmin, userCtrl.getSummary)
 router.get("/manage/owners", auth, authAdmin, userCtrl.getAllOwners)
+router.put('/manage/update-state/:id', auth, authAdmin, userCtrl.updateState)
 
 //router.post('/getListUser', auth, authAdmin, userCtrl.getListUser)
 module.exports = router

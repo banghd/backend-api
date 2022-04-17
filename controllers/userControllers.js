@@ -113,6 +113,21 @@ const UserControllers = {
                 message: e.message
             })
         }
+    },
+    updateState: async (req, res) => {
+        try {
+            const { state } = req.body
+            const { id } = req.params
+            const result = await userService.updateState(id, state)
+            return res.status(200).json({
+                message: "Success",
+                data: result
+            })
+        } catch (error) {
+            return res.status(400).json({
+                message: e.message
+            })
+        }
     }
 }
 

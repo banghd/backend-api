@@ -17,5 +17,6 @@ router.post('/increase-view/:id', accomodationController.increseViews)
 router.get('/manage/summary', auth, authAdmin, accomodationController.getSummary)
 router.get('/manage/posts', auth, authAdmin, accomodationController.getAllPosts)
 router.get('/payment/:id', auth, accomodationController.payAcc)
+router.put('/manage/update-state/:id', auth, authAdmin, accomodationController.updateState)
 
 module.exports = router

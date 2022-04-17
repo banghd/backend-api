@@ -87,7 +87,7 @@ const userService = {
     getSummary: async () => {
         const renters = await UserModel.where('role', 3).count() ;
         const owners = await UserModel.where('role', 2).count();
-        const notApproved = await UserModel.where('role', 2).where('status', 1).count();
+        const notApproved = await UserModel.where('role', 2).where('state', 1).count();
         const approved = owners - notApproved
         return {
             renters,
@@ -104,6 +104,10 @@ const userService = {
         query.role = 2
         console.log('query', query)
         const data = await UserModel.find(query).skip((page - 1) * limit).limit(limit).sort({'createdAt': 'desc'})
+        return data
+    },
+    updateState: async (id, state) => {
+        const data = await UserModel.updateOne({_id: id}, {state: state})
         return data
     }
 }
