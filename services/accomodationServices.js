@@ -139,8 +139,8 @@ const AccomodationService = {
     getSummary: async ()=> {
         const posts = await AccomodationModel.count()
         const paid = await AccomodationModel.where('isPaid', true).count()
-        const notApprove = await AccomodationModel.where('state', 1).count()
-        const approved = posts - notApprove
+        const notApprove = await AccomodationModel.where('status', "waiting").count()
+        const approved = await AccomodationModel.where('status', "approved").count()
         return {
             posts,
             paid,
