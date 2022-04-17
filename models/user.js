@@ -52,7 +52,7 @@ const userSchema = new mongoose.Schema({
     state: {
         type: Number,
         default: 1,
-        enum: [1,2,3]
+        enum: [0,1,2]
     },
     resetToken: String
 }, {
