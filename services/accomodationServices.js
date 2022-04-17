@@ -97,7 +97,7 @@ const AccomodationService = {
         }
     },
     getListRenterAcc: async (payload) =>{
-        const query = {status : "posted", state: 2, isRented: false}
+        const query = {status : "approved", isRented: false}
         if (payload.type) query.type = parseInt(payload.type)
         if(payload.district) query["address.district"] = payload.district
         if(payload.ward) query["address.ward"] = payload.ward
@@ -159,9 +159,8 @@ const AccomodationService = {
     payAcc : async (id) => {
         return AccomodationModel.updateOne({_id: id}, {isPaid: true})
     },
-    updateState : async (id, state) => {
-        console.log('id', id)
-        return AccomodationModel.updateOne({_id: id}, {state: state})
+    updateState : async (id, status) => {
+        return AccomodationModel.updateOne({_id: id}, {status})
     }
 }
 module.exports = AccomodationService

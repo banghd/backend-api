@@ -52,6 +52,36 @@ const reportCtrl = {
                 message: e.message
             })
         }
+    },
+    listEvalution : async (req, res) => {
+        try {
+            const {id} = req.params
+            if (!id) return res.status(400).json({
+                message: "vui lòng cung cấp id"
+            })
+            let data = await reportService.listEvalution(id)
+            return res.json(data)
+        }
+        catch (e) {
+            return res.status(400).json({
+                message: e.message
+            })
+        }
+    },
+    userReport : async (req, res) =>{
+        try {
+            const {userId} = req.params
+            if (!userId) return res.status(400).json({
+                message: "vui lòng cung cấp id"
+            })
+            let data = await reportService.userReport(userId)
+            return res.json(data)
+        }
+        catch (e) {
+            return res.status(400).json({
+                message: e.message
+            })
+        }
     }
 
 }

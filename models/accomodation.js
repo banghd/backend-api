@@ -4,7 +4,7 @@ const roomType = require('../constants/typeAccomod')
 const AccomodSchema = new mongoose.Schema({
     status: {
         type: String,
-        enum: ["draft", "posted", "approved"],
+        enum: ["draft", "waiting", "approved", "rejected"],
         default: "draft"
     },
     type : {

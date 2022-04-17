@@ -1,5 +1,6 @@
 const ReportModel = require('../models/ReportAccomod')
 const UserModel = require('../models/user')
+const AccomodModel = require('../models/accomodation')
 const reportService = {
     createComment: async (payload) => {
         const user = await UserModel.findById(payload.userId)
@@ -33,6 +34,15 @@ const reportService = {
     },
     listComment: async (id) => {
         return ReportModel.find({postId : id, type: "comment"})
+    },
+    listEvalution : async (id) => {
+        return ReportModel.find({postId : id, type: "evaluation"})
+    },
+    userReport : async (id) => {
+        const totalPost = await AccomodModel.countDocuments({status: "posted", ownerId : id})
+        const likesPost = await AccomodModel.find({likes: {$gt: 0}, ownerId : id})
+        const likes = likesPost.reduce((partialSum, a) => partialSum + a.likes, 0)
+        const approvePost = await AccomodModel.countDocuments({status: "posted", ownerId : id})
     }
 }
 

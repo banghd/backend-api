@@ -216,9 +216,9 @@ const AccomodationControllers = {
     },
     updateState : async (req, res) => {
         try {
-            const { state } = req.body
+            const { status } = req.body
             const { id } = req.params
-            const result = await accomodationService.updateState(id, state)
+            const result = await accomodationService.updateState(id, status)
             return res.status(200).json({
                 message: "success",
                 data: result
