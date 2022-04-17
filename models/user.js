@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true
+        required: false
     },
     role: {
         type: Number,
@@ -54,6 +54,7 @@ const userSchema = new mongoose.Schema({
         default: 1,
         enum: [0,1,2]
     },
+    resetToken: String
 }, {
     timestamps: true
 })

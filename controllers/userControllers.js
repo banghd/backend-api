@@ -128,6 +128,78 @@ const UserControllers = {
                 message: e.message
             })
         }
+    },
+    logInGG : async (req, res) => {
+        try {
+            const {token, role} = req.body
+            if (!token) return res.status(400).json({
+                message: "invalid token"
+            })
+            const { OAuth2Client } = require('google-auth-library')
+            const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID)
+
+            const ticket = await client.verifyIdToken({
+                idToken: token,
+                audience: process.env.GOOGLE_CLIENT_ID
+            })
+
+            const { name, email, picture } = ticket.getPayload()
+            let data = { name, email, picture, role }
+
+            let {accessToken, refreshToken }= await userService.UpsertUser(data)
+            return res.json({data : {accessToken, refreshToken}, message: "Log in via google thành công"})
+
+        } catch (e) {
+            return res.status(400).json({
+                message: e.message
+            })
+        }
+    },
+    request_password : async (req, res) => {
+        try {
+            const {email} = req.body
+            if(!email) return res.status(400).json({
+                message: "vui lòng cung cấp email"
+            })
+            const response = await userService.request_pass(email)
+            return res.json({
+                message: "Vui lòng kiểm tra email",
+                response
+            })
+        }
+        catch (e) {
+            return res.status(400).json({
+                message: e.message
+            })
+        }
+    },
+    resetPassword : async (req, res) =>{
+        const {token, password} = req.body
+        try {
+            if(!token || !password) return res.status(400).json({
+                message: "không có token hoặc password"
+            })
+            await userService.resetPassword(token, password)
+            return res.json({message: "đổi mật khẩu thành công"})
+        } catch (e) {
+            return res.status(400).json({
+                message: e.message
+            })
+        }
+    },
+    getReport : async (req, res) =>{
+        const {id} = req.query
+        try {
+            if(!id) return res.status(400).json({
+                message: "không có id"
+            })
+            let data = await userService.getReport(id)
+            return res.json({message: "đổi mật khẩu thành công"})
+        } catch (e) {
+            return res.status(400).json({
+                message: e.message
+            })
+        }
     }
 }
 
