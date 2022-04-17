@@ -213,6 +213,22 @@ const AccomodationControllers = {
             })
         }
 
+    },
+    updateState : async (req, res) => {
+        try {
+            const { state } = req.body
+            const { id } = req.params
+            const result = await accomodationService.updateState(id, state)
+            return res.status(200).json({
+                message: "success",
+                data: result
+            })
+        } catch (e) {
+            return res.status(400).json({
+                message: e.message
+            })
+        }
+
     }
 }
 
