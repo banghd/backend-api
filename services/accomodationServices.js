@@ -118,8 +118,8 @@ const AccomodationService = {
 
         //paginate
         let page, limit
-        query.page ?  page= parseInt(query.page)  : page = 1
-        query.limit ? limit = parseInt(query.limit) : limit = 10
+        payload.page ?  page = parseInt(payload.page)  : page = 1
+        payload.limit ? limit = parseInt(payload.limit) : limit = 10
         const data = await AccomodationModel.find(query).populate({path : "ownerId"}).skip((page - 1) * limit).limit(limit).sort(opt)
         return {
             total,
