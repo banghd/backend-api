@@ -124,6 +124,8 @@ const AccomodationService = {
         return {
             total,
             data,
+            page,
+            limit,
             message: "ok"
         }
     },
