@@ -156,7 +156,7 @@ const AccomodationService = {
         query.page ?  page= parseInt(query.page)  : page = 1
         query.limit ? limit = parseInt(query.limit) : limit = 10
         const data = await AccomodationModel.find(query).populate({
-            path: "ownerId"
+            path: "ownerId", select: "name"
         }).skip((page - 1) * limit).limit(limit).sort({'createdAt': 'desc'})
         return data
     },
