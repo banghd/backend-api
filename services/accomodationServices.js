@@ -154,6 +154,7 @@ const AccomodationService = {
     getAllPosts: async (req) => {
         const query = req.query
         let page, limit
+        query.status = {$ne : "draft"}
         query.page ?  page= parseInt(query.page)  : page = 1
         query.limit ? limit = parseInt(query.limit) : limit = 10
         const data = await AccomodationModel.find(query).populate({
