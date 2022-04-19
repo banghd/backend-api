@@ -54,7 +54,8 @@ const AccomodationService = {
         if (payload.isRented == "false") query.isRented = false
         if (payload.isExpired == "true") query.postExpired = {"$lte": new Date()}
         if (payload.isExpired == "false") query.postExpired = {"$gte": new Date()}
-        if (payload.status != "") query.status = payload.status
+        if (payload.status != "" && payload.status) query.status = payload.status
+        else query.status = {$ne : "draft"}
         if (payload.title) {
             query["detailedPost.title"] = {"$regex": payload.title}
         }
