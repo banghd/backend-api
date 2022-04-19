@@ -140,7 +140,7 @@ const AccomodationService = {
         return AccomodationModel.updateOne({_id: id}, {$inc: {view: 1}})
     },
     getSummary: async ()=> {
-        const posts = await AccomodationModel.count()
+        const posts = await AccomodationModel.countDocuments({status: {$ne: "draft"}})
         const paid = await AccomodationModel.where('isPaid', true).count()
         const notApprove = await AccomodationModel.where('status', "waiting").count()
         const approved = await AccomodationModel.where('status', "approved").count()
