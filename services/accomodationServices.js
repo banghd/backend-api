@@ -98,7 +98,7 @@ const AccomodationService = {
         }
     },
     getListRenterAcc: async (payload) =>{
-        const query = {status : "approved", isRented: false}
+        const query = {status : "approved", isRented: false, postExpired: {$gte : new Date()}}
         if (payload.type) query.type = parseInt(payload.type)
         if(payload.district) query["address.district"] = payload.district
         if(payload.ward) query["address.ward"] = payload.ward
