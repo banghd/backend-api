@@ -14,6 +14,7 @@ router.put('/manage/update-state/:id', auth, authAdmin, userCtrl.updateState)
 router.post('/google/login', userCtrl.logInGG)
 router.post("/request-password", userCtrl.request_password)
 router.post("/reset-password", userCtrl.resetPassword)
+router.get("/favorite-accomod", auth, userCtrl.getFavorite)
 
 //router.post('/getListUser', auth, authAdmin, userCtrl.getListUser)
 module.exports = router

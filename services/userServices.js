@@ -192,6 +192,18 @@ const userService = {
         if (likedPost && likedPost.length ){
 
         }
+    },
+    getFavorite : async (query) =>{
+        let {limit,page,id} = query
+        limit ? limit = parseInt(limit) : limit = 10
+        page ? page = parseInt(page) : page = 1
+        const Accomod = await AccomdModel.find({userLiked : {$elemMatch : id}}).limit(limit).skip((page - 1)* limit)
+        return {
+            total: Accomod.length,
+            page,
+            limit,
+            data : Accomod
+        }
     }
 }
 module.exports = userService

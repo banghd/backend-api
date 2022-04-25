@@ -200,6 +200,16 @@ const UserControllers = {
                 message: e.message
             })
         }
+    },
+    getFavorite : async (req, res) => {
+        try {
+            const data = await userService.getFavorite(req.query)
+            return res.json(data)
+        }catch (e) {
+            return res.status(400).json({
+                message: e.message
+            })
+        }
     }
 }
 
