@@ -197,7 +197,7 @@ const userService = {
         let {limit,page,id} = query
         limit ? limit = parseInt(limit) : limit = 10
         page ? page = parseInt(page) : page = 1
-        const Accomod = await AccomdModel.find({userLiked : {$elemMatch : id}}).limit(limit).skip((page - 1)* limit)
+        const Accomod = await AccomdModel.find({userLiked : {$elemMatch : {$eq: id}}}).limit(limit).skip((page - 1)* limit)
         return {
             total: Accomod.length,
             page,
