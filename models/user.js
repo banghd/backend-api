@@ -54,7 +54,11 @@ const userSchema = new mongoose.Schema({
         default: 1,
         enum: [0,1,2]
     },
-    resetToken: String
+    resetToken: String,
+    isApproved: {
+        type: Boolean,
+        default: false
+    }
 }, {
     timestamps: true
 })
