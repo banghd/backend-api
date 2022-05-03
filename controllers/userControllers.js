@@ -5,8 +5,21 @@ const UserControllers = {
         try {
             const {id} = req.params
             if (!id) return res.status(400).json({message: "please provide id"})
-            const data = await userService.getdata(id)
+            const {data, report} = await userService.getdata(id)
             return res.json(data)
+        } catch (e) {
+            return res.status(400).json({
+                message: e.message
+            })
+        }
+
+    },
+    getdataReport : async (req, res) => {
+        try {
+            const {id} = req.params
+            if (!id) return res.status(400).json({message: "please provide id"})
+            const {data, report} = await userService.getdata(id)
+            return res.json(report)
         } catch (e) {
             return res.status(400).json({
                 message: e.message
