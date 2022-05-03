@@ -19,8 +19,8 @@ const userService = {
         const approve = accomods.filter(x => x.status === "approved").length
         const reject = accomods.filter(x => x.status === "rejected").length
         const likes = accomods.reduce((sum,b)=> sum + b.likes, 0)
-        data.report = {waiting, approve, reject, likes}
-        return data
+        let report = {waiting, approve, reject, likes}
+        return {data, report}
     },
     createUser: async (data) => {
         const existUser = await UserModel.findOne({email: data.email})
