@@ -14,6 +14,12 @@ const userService = {
         if (!data) {
             throw new Error("Cannot find user")
         }
+        const accomods = await AccomdModel.find({ownerId: id, status: {$in : ["waiting", "approved"]}}).lean()
+        const waiting = accomods.filter(x => x.status === "waiting").length
+        const approve = accomods.filter(x => x.status === "approved").length
+        const reject = accomods.filter(x => x.status === "approved").length
+        const likes = accomods.reduce((sum,b)=> sum + b.likes, 0)
+        data.report = {waiting, approve, reject, likes}
         return data
     },
     createUser: async (data) => {
