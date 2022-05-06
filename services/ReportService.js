@@ -43,6 +43,9 @@ const reportService = {
         const likesPost = await AccomodModel.find({likes: {$gt: 0}, ownerId : id})
         const likes = likesPost.reduce((partialSum, a) => partialSum + a.likes, 0)
         const approvePost = await AccomodModel.countDocuments({status: "posted", ownerId : id})
+    },
+    deleteReport : async (id) => {
+        return ReportModel.deleteOne({_id: id})
     }
 }
 

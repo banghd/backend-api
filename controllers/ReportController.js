@@ -82,6 +82,22 @@ const reportCtrl = {
                 message: e.message
             })
         }
+    },
+    deleteReport : async (req, res ) => {
+        try {
+            await reportService.deleteReport(req.params.id)
+            return res.json({message: "ok"})
+        }
+        catch (e) {
+            return res.status(400).json({
+                message: e.message
+            })
+        }
+    },
+    getLisstReport : async (req, res) => {
+        const model = require("../models/ReportAccomod")
+        const data = await model.find({type: "report"})
+        return res.json(data)
     }
 
 }
