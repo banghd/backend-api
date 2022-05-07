@@ -7,7 +7,8 @@ module.exports = {
             const a = await Model.countDocuments({type})
             if (a > 0) return res.status(400).json({message: "tên trùng"})
             await Model.create({type})
-            return res.json({message: "tạo loại phòng thành công"})
+            let data = await Model.findOne({type})
+            return res.json({message: "tạo loại phòng thành công", data})
         } catch (e) {
             return res.status(500).json({message: e.message})
         }
