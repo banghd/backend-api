@@ -16,6 +16,7 @@ router.post('/google/login', userCtrl.logInGG)
 router.post("/request-password", userCtrl.request_password)
 router.post("/reset-password", userCtrl.resetPassword)
 router.get("/favorite/accomod", auth, userCtrl.getFavorite)
+router.get("/manage/statistic", auth,authAdmin, userCtrl.getStatistic)
 
 //router.post('/getListUser', auth, authAdmin, userCtrl.getListUser)
 module.exports = router

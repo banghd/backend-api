@@ -210,6 +210,90 @@ const userService = {
             limit,
             data : Accomod
         }
+    },
+    getStatistic : async (query) =>{
+        const districtQuery = [
+            {
+              '$group': {
+                '_id': '$address.district', 
+                'count': {
+                  '$sum': 1
+                }
+              }
+            }, {
+              '$sort': {
+                'count': -1
+              }
+            }, {
+              '$limit': 10
+            }
+          ]
+        const districtCount = await AccomdModel.aggregate(districtQuery).exec()
+        console.log('distric', districtCount)
+
+        const areaGroup1 = await AccomdModel.count({
+            area: {
+              $gt: 0,
+              $lt: 50,
+            },
+          });
+        const areaGroup2 = await AccomdModel.count({
+            area: {
+              $gt: 50,
+              $lt: 100,
+            },
+        });
+        const areaGroup3 = await AccomdModel.count({
+            area: {
+              $gt: 100,
+              $lt: 200,
+            },
+        });
+        const areaGroup4 = await AccomdModel.count({
+            area: {
+              $gt: 200,
+            },
+        });
+
+        // const priceGroup1 = await AccomdModel.count({
+        //     price.quantity: {
+        //       $gt: 0,
+        //       $lt: 1000000,
+        //     },
+        //   });
+        // const priceGroup2 = await AccomdModel.count({
+        //     price: {
+        //       $gt: 1000000,
+        //       $lt: 2000000,
+        //     },
+        // });
+        // const priceGroup3 = await AccomdModel.count({
+        //     area: {
+        //       $gt: 2000000,
+        //       $lt: 3000000,
+        //     },
+        // });
+        // const priceGroup4 = await AccomdModel.count({
+        //     area: {
+        //       $gt: 3000000,
+        //     },
+        // });
+
+        return {
+            district: districtCount,
+            area: [
+                areaGroup1,
+                areaGroup2,
+                areaGroup3,
+                areaGroup4
+            ],
+            // price: [
+            //     priceGroup1,
+            //     priceGroup2,
+            //     priceGroup3,
+            //     priceGroup4
+            // ]
+        }
     }
 }
 module.exports = userService
