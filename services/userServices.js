@@ -212,6 +212,11 @@ const userService = {
         }
     },
     getStatistic : async (query) =>{
+        const data = {
+            district: [],
+            area: [],
+            price: [],
+        }
         const districtQuery = [
             {
               '$group': {
@@ -229,7 +234,7 @@ const userService = {
             }
           ]
         const districtCount = await AccomdModel.aggregate(districtQuery).exec()
-        console.log('distric', districtCount)
+        data.district = districtCount
 
         const areaGroup1 = await AccomdModel.count({
             area: {
@@ -254,46 +259,57 @@ const userService = {
               $gt: 200,
             },
         });
-
-        // const priceGroup1 = await AccomdModel.count({
-        //     price.quantity: {
-        //       $gt: 0,
-        //       $lt: 1000000,
-        //     },
-        //   });
-        // const priceGroup2 = await AccomdModel.count({
-        //     price: {
-        //       $gt: 1000000,
-        //       $lt: 2000000,
-        //     },
-        // });
-        // const priceGroup3 = await AccomdModel.count({
-        //     area: {
-        //       $gt: 2000000,
-        //       $lt: 3000000,
-        //     },
-        // });
-        // const priceGroup4 = await AccomdModel.count({
-        //     area: {
-        //       $gt: 3000000,
-        //     },
-        // });
-
-        return {
-            district: districtCount,
-            area: [
-                areaGroup1,
-                areaGroup2,
-                areaGroup3,
-                areaGroup4
-            ],
-            // price: [
-            //     priceGroup1,
-            //     priceGroup2,
-            //     priceGroup3,
-            //     priceGroup4
-            // ]
+        data.area = [
+            areaGroup1,
+            areaGroup2,
+            areaGroup3,
+            areaGroup4
+        ]
+        
+        for(let i = 0; i< 3; i++) {
+            let unit = 'month'
+            if(i==0) unit = 'month'
+            if(i==1) unit = 'quarter'
+            if(i==2) unit = 'year'
+            const priceGroup1 = await AccomdModel.count({
+                'price.quantity': {
+                    $gt: 0,
+                    $lt: (1000000 - 1),
+                },
+                'price.unit' : unit
+                });
+            const priceGroup2 = await AccomdModel.count({
+                'price.quantity': {
+                    $gt: (1000000 - 2),
+                    $lt: (2000000 - 1),
+                },
+                'price.unit' : unit
+            });
+            const priceGroup3 = await AccomdModel.count({
+                'price.quantity': {
+                    $gt: (2000000 - 2),
+                    $lt: (3000000 - 1),
+                },
+                'price.unit' : unit
+            });
+            const priceGroup4 = await AccomdModel.count({
+                'price.quantity': {
+                    $gt: (3000000 - 2),
+                },
+                'price.unit' : unit
+            });
+            data.price.push([
+                    priceGroup1,
+                    priceGroup2,
+                    priceGroup3,
+                    priceGroup4
+                ]
+            )
         }
+
+
+
+        return data
     }
 }
 module.exports = userService
