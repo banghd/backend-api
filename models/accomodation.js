@@ -8,9 +8,8 @@ const AccomodSchema = new mongoose.Schema({
         default: "draft"
     },
     type : {
-        type: Number,
-        enum: Object.values(roomType),
-        default: roomType.motel
+        type: String,
+        default: "Hotel"
     } ,
     address : {
         district : {

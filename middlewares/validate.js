@@ -77,7 +77,7 @@ const validateAccomodation = async (req, res, next) => {
     }
     const schema = joi.object({
         status: joi.string().valid("draft", "waiting", "approved", "rejected"),
-        type: joi.number().required(),
+        type: joi.string().required(),
         address: {
             district: joi.string().trim().required(),
             ward: joi.string().trim().required(),
