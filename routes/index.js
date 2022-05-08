@@ -9,6 +9,7 @@ router.use('/accomodations', require('./accomodation'))
 router.use('/report', require('./report'))
 router.use("/payment", require('./payment'))
 router.use("/categories", require("./category"))
+router.use("/personal-filters", require("./PersonalFilter"))
 router.use("*", (req,res) => {
     res.redirect("/")
 })
