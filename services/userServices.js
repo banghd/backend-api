@@ -219,6 +219,11 @@ const userService = {
         }
         const districtQuery = [
             {
+                '$match': {
+                    "status": { $ne: 'draft' }
+                }
+            },
+            {
               '$group': {
                 '_id': '$address.district', 
                 'count': {
@@ -231,30 +236,30 @@ const userService = {
               }
             }, {
               '$limit': 10
-            }
+            },
           ]
         const districtCount = await AccomdModel.aggregate(districtQuery).exec()
         data.district = districtCount
 
-        const areaGroup1 = await AccomdModel.count({
+        const areaGroup1 = await AccomdModel.where({"status": { $ne: 'draft' }}).count({
             area: {
               $gt: 0,
               $lt: 50,
             },
           });
-        const areaGroup2 = await AccomdModel.count({
+        const areaGroup2 = await AccomdModel.where({"status": { $ne: 'draft' }}).count({
             area: {
               $gt: 50,
               $lt: 100,
             },
         });
-        const areaGroup3 = await AccomdModel.count({
+        const areaGroup3 = await AccomdModel.where({"status": { $ne: 'draft' }}).count({
             area: {
               $gt: 100,
               $lt: 200,
             },
         });
-        const areaGroup4 = await AccomdModel.count({
+        const areaGroup4 = await AccomdModel.where({"status": { $ne: 'draft' }}).count({
             area: {
               $gt: 200,
             },
@@ -271,28 +276,28 @@ const userService = {
             if(i==0) unit = 'month'
             if(i==1) unit = 'quarter'
             if(i==2) unit = 'year'
-            const priceGroup1 = await AccomdModel.count({
+            const priceGroup1 = await AccomdModel.where({"status": { $ne: 'draft' }}).count({
                 'price.quantity': {
                     $gt: 0,
                     $lt: (1000000 - 1),
                 },
                 'price.unit' : unit
                 });
-            const priceGroup2 = await AccomdModel.count({
+            const priceGroup2 = await AccomdModel.where({"status": { $ne: 'draft' }}).count({
                 'price.quantity': {
                     $gt: (1000000 - 2),
                     $lt: (2000000 - 1),
                 },
                 'price.unit' : unit
             });
-            const priceGroup3 = await AccomdModel.count({
+            const priceGroup3 = await AccomdModel.where({"status": { $ne: 'draft' }}).count({
                 'price.quantity': {
                     $gt: (2000000 - 2),
                     $lt: (3000000 - 1),
                 },
                 'price.unit' : unit
             });
-            const priceGroup4 = await AccomdModel.count({
+            const priceGroup4 = await AccomdModel.where({"status": { $ne: 'draft' }}).count({
                 'price.quantity': {
                     $gt: (3000000 - 2),
                 },
