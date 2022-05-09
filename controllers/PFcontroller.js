@@ -4,7 +4,7 @@ module.exports = {
         try {
             const {name, query} = req.body
             if (!name || !query) return res.status(400).json({message: "thiếu field"})
-            const a = await Model.countDocuments({name})
+            const a = await Model.countDocuments({name, userId : req.user.id})
             if (a > 0) return res.status(400).json({message: "tên trùng"})
             await Model.create({name, query, userId: req.user.id})
             let data = await Model.findOne({name})
