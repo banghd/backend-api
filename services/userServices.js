@@ -249,19 +249,19 @@ const userService = {
           });
         const areaGroup2 = await AccomdModel.where({"status": { $ne: 'draft' }}).count({
             area: {
-              $gt: 50,
+              $gte: 50,
               $lt: 100,
             },
         });
         const areaGroup3 = await AccomdModel.where({"status": { $ne: 'draft' }}).count({
             area: {
-              $gt: 100,
+              $gte: 100,
               $lt: 200,
             },
         });
         const areaGroup4 = await AccomdModel.where({"status": { $ne: 'draft' }}).count({
             area: {
-              $gt: 200,
+              $gte: 200,
             },
         });
         data.area = [
