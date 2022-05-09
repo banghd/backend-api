@@ -273,33 +273,42 @@ const userService = {
         
         for(let i = 0; i< 3; i++) {
             let unit = 'month'
-            if(i==0) unit = 'month'
-            if(i==1) unit = 'quarter'
-            if(i==2) unit = 'year'
+            if(i==0) {
+                unit = 'month'
+                unitNumber = 1
+            }
+            if(i==1) {
+                unit = 'quarter',
+                unitNumber = 3
+            }
+            if(i==2) {
+                unit = 'year'
+                unitNumber = 12
+            }
             const priceGroup1 = await AccomdModel.where({"status": { $ne: 'draft' }}).count({
                 'price.quantity': {
                     $gt: 0,
-                    $lt: (1000000 - 1),
+                    $lt: unitNumber * 1000000,
                 },
                 'price.unit' : unit
                 });
             const priceGroup2 = await AccomdModel.where({"status": { $ne: 'draft' }}).count({
                 'price.quantity': {
-                    $gt: (1000000 - 2),
-                    $lt: (2000000 - 1),
+                    $gte: unitNumber * 1000000,
+                    $lt: unitNumber * 2000000,
                 },
                 'price.unit' : unit
             });
             const priceGroup3 = await AccomdModel.where({"status": { $ne: 'draft' }}).count({
                 'price.quantity': {
-                    $gt: (2000000 - 2),
-                    $lt: (3000000 - 1),
+                    $gte: unitNumber * 2000000,
+                    $lt: unitNumber * 3000000,
                 },
                 'price.unit' : unit
             });
             const priceGroup4 = await AccomdModel.where({"status": { $ne: 'draft' }}).count({
                 'price.quantity': {
-                    $gt: (3000000 - 2),
+                    $gte: unitNumber * 3000000,
                 },
                 'price.unit' : unit
             });
