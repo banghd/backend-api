@@ -8,6 +8,7 @@
     "test": "mocha"
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "bcrypt": "^5.0.1",
     "bluebird": "^3.7.2",
     "cloudinary": "^1.28.1",
@@ -28,7 +29,8 @@
     "nodemailer": "^6.7.3",
     "nodemon": "^2.0.15",
     "pug": "2.0.0-beta11",
-    "qs": "^6.10.3"
+    "qs": "^6.10.3",
+    "sib-api-v3-sdk": "^8.3.0"
   },
   "devDependencies": {
     "mocha": "^5.1.1",

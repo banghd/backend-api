@@ -167,22 +167,39 @@ const userService = {
             }
         }//create Token
         const token = jwt.sign({email}, process.env.JWT_REFRESH_TOKEN,{expiresIn: "5m"})
-        await UserModel.updateOne({email}, {$set: {resetToken : token}})
-        //send mail
-        const transporter = nodemail.createTransport({
-            service: 'gmail',
-            auth: {
-                user: process.env.MYEMAIL,
-                pass: process.env.MYPASSEMAIL
+
+        //axios send mail
+        const axios = require('axios')
+        let data = {
+            "sender": {
+                "name": "Admin thue tro",
+                "email": "minhbangod@gmail.com"
+            },
+            "to": [
+                {
+                    "email": email,
+                    "name": user.name || ""
+                }
+            ],
+            "subject": "Reset password",
+            "htmlContent": require('../constants/resetmailTemplate').generateResetMail(user.name, token),
+            "headers": {
+                "X-Mailin-custom": "custom_header_1:custom_value_1|custom_header_2:custom_value_2|custom_header_3:custom_value_3",
+                "charset": "iso-8859-1"
             }
-        })
-        let mailOptions = {
-            from: process.env.MYEMAIL,
-            to: email,
-            subject: 'Sending Email request Password',
-            html: require('../constants/resetmailTemplate').generateResetMail(user.name, token)
+        }
+        var config = {
+            method: 'post',
+            url: 'https://api.sendinblue.com/v3/smtp/email',
+            headers: {
+                'accept': 'application/json',
+                'api-key': process.env.MAIL_API_KEY,
+                'content-type': 'application/json'
+            },
+            data : data
         };
-        return transporter.sendMail(mailOptions)
+        await axios(config)
+        return UserModel.updateOne({email}, {$set: {resetToken : token}})
     },
     resetPassword :async (token, password) => {
         //verify token
