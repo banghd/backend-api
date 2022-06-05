@@ -110,6 +110,9 @@ const AccomodationService = {
 
         if (!isEmpty(area)) query.area = area
         if (payload.bedRoom)query.bedRoom = parseInt(payload.bedRoom)
+
+        if (payload.minPrice) query["price.quantity"] = {"$gte": parseInt(payload.minPrice)}
+        if (payload.maxPrice) query["price.quantity"] = {"$lte": parseInt(payload.maxPrice)}
         //sỏting
         if (payload.sortByLike == "false")opt["likes"] = 1
         if (payload.sortByLike == "true") opt["likes"] = -1
@@ -121,6 +124,7 @@ const AccomodationService = {
         let page, limit
         payload.page ?  page = parseInt(payload.page)  : page = 1
         payload.limit ? limit = parseInt(payload.limit) : limit = 10
+        console.log(query)
         const data = await AccomodationModel.find(query).populate({path : "ownerId"}).skip((page - 1) * limit).limit(limit).sort(opt)
         return {
             total,
